@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Perfume Essential</title>
 
@@ -13,8 +14,6 @@ body{
 margin:0;
 font-family:Arial;
 color:white;
-
-/* fondo marmol */
 
 background:
 radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06), transparent 40%),
@@ -27,25 +26,7 @@ text-align:center;
 padding:40px;
 font-size:34px;
 font-weight:bold;
-letter-spacing:2px;
 }
-
-/* logos */
-
-.brands{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:20px;
-padding:20px;
-opacity:0.8;
-}
-
-.brands img{
-height:35px;
-}
-
-/* controles */
 
 .controls{
 display:flex;
@@ -60,8 +41,6 @@ padding:10px;
 border-radius:8px;
 border:none;
 }
-
-/* grid */
 
 .grid{
 display:grid;
@@ -116,10 +95,6 @@ cursor:pointer;
 width:100%;
 }
 
-button:hover{
-opacity:0.9;
-}
-
 .whatsapp{
 position:fixed;
 bottom:20px;
@@ -128,8 +103,8 @@ background:#25D366;
 color:white;
 padding:15px;
 border-radius:50px;
-font-weight:bold;
 text-decoration:none;
+font-weight:bold;
 }
 
 </style>
@@ -139,16 +114,6 @@ text-decoration:none;
 <body>
 
 <header>Perfume Essential</header>
-
-<div class="brands">
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Versace_logo.svg">
-<img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Armani_logo.svg">
-<img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Dior_logo.svg">
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Hugo_Boss_logo.svg">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Paco_Rabanne_logo.svg">
-
-</div>
 
 <div class="controls">
 
@@ -168,8 +133,9 @@ text-decoration:none;
 
 <div class="grid" id="catalog"></div>
 
-<a class="whatsapp" target="_blank"
-href="https://wa.me/19563371082">
+<a class="whatsapp"
+href="https://wa.me/19563371082"
+target="_blank">
 WhatsApp
 </a>
 
@@ -187,36 +153,103 @@ return Math.round(base*1.15)
 
 }
 
-const basePerfumes=[
+const perfumes=[
 
-{name:"Nautica Voyage",brand:"Nautica",type:"EDT",size:"100ml",base:242,img:"https://m.media-amazon.com/images/I/71m4iJqJY6L.jpg"},
+{
+name:"Nautica Voyage",
+brand:"Nautica",
+type:"EDT",
+size:"100ml",
+base:242,
+img:"https://cdn.fragrancenet.com/images/photos/900x900/181557.jpg"
+},
 
-{name:"Versace Eros",brand:"Versace",type:"EDP",size:"100ml",base:1054,img:"https://m.media-amazon.com/images/I/61K8ouYrHeL.jpg"},
+{
+name:"Versace Eros",
+brand:"Versace",
+type:"EDP",
+size:"100ml",
+base:1054,
+img:"https://cdn.fragrancenet.com/images/photos/900x900/256701.jpg"
+},
 
-{name:"Versace Dylan Blue",brand:"Versace",type:"EDT",size:"100ml",base:887,img:"https://m.media-amazon.com/images/I/61mH0U9sFCL.jpg"},
+{
+name:"Versace Dylan Blue",
+brand:"Versace",
+type:"EDT",
+size:"100ml",
+base:887,
+img:"https://cdn.fragrancenet.com/images/photos/900x900/314889.jpg"
+},
 
-{name:"Invictus",brand:"Paco Rabanne",type:"EDT",size:"100ml",base:1388,img:"https://m.media-amazon.com/images/I/71dZqv1A0GL.jpg"},
+{
+name:"Invictus",
+brand:"Paco Rabanne",
+type:"EDT",
+size:"100ml",
+base:1388,
+img:"https://cdn.fragrancenet.com/images/photos/900x900/259520.jpg"
+},
 
-{name:"Acqua Di Gio",brand:"Armani",type:"EDT",size:"100ml",base:1590,img:"https://m.media-amazon.com/images/I/61g8QvQ8SQL.jpg"},
+{
+name:"Acqua Di Gio",
+brand:"Armani",
+type:"EDT",
+size:"100ml",
+base:1590,
+img:"https://cdn.fragrancenet.com/images/photos/900x900/126742.jpg"
+},
 
-{name:"Montblanc Explorer",brand:"Montblanc",type:"EDP",size:"100ml",base:790,img:"https://m.media-amazon.com/images/I/61dJ5pHfWnL.jpg"},
+{
+name:"Montblanc Explorer",
+brand:"Montblanc",
+type:"EDP",
+size:"100ml",
+base:790,
+img:"https://cdn.fragrancenet.com/images/photos/900x900/349436.jpg"
+},
 
-{name:"Afnan 9PM",brand:"Afnan",type:"EDP",size:"100ml",base:525,img:"https://m.media-amazon.com/images/I/61v+4Wc9fAL.jpg"},
+{
+name:"Afnan 9PM",
+brand:"Afnan",
+type:"EDP",
+size:"100ml",
+base:525,
+img:"https://cdn.fragrancenet.com/images/photos/900x900/431077.jpg"
+},
 
-{name:"Lattafa Asad",brand:"Lattafa",type:"EDP",size:"100ml",base:479,img:"https://m.media-amazon.com/images/I/61QF9W6N6HL.jpg"},
+{
+name:"Lattafa Asad",
+brand:"Lattafa",
+type:"EDP",
+size:"100ml",
+base:479,
+img:"https://cdn.fragrancenet.com/images/photos/900x900/456218.jpg"
+},
 
-{name:"Bharara King",brand:"Bharara",type:"EDP",size:"100ml",base:1060,img:"https://m.media-amazon.com/images/I/61Z2pVwJbJL.jpg"},
+{
+name:"Bharara King",
+brand:"Bharara",
+type:"EDP",
+size:"100ml",
+base:1060,
+img:"https://cdn.fragrancenet.com/images/photos/900x900/455541.jpg"
+},
 
-{name:"Le Male",brand:"Jean Paul Gaultier",type:"EDT",size:"125ml",base:1500,img:"https://m.media-amazon.com/images/I/71xV8Kf8WGL.jpg"}
+{
+name:"Jean Paul Gaultier Le Male",
+brand:"Jean Paul Gaultier",
+type:"EDT",
+size:"125ml",
+base:1500,
+img:"https://cdn.fragrancenet.com/images/photos/900x900/124176.jpg"
+}
 
 ]
 
-const perfumes=[]
-
-for(let i=0;i<30;i++){
-basePerfumes.forEach(p=>{
-perfumes.push({...p})
-})
+// duplicar hasta tener catálogo grande
+while(perfumes.length<200){
+perfumes.push(perfumes[Math.floor(Math.random()*perfumes.length)])
 }
 
 const catalog=document.getElementById("catalog")
@@ -272,9 +305,7 @@ const brands=[...new Set(perfumes.map(p=>p.brand))]
 const brandFilter=document.getElementById("brandFilter")
 
 brands.forEach(b=>{
-
 brandFilter.innerHTML+=<option>${b}</option>
-
 })
 
 function update(){
@@ -286,27 +317,19 @@ const brand=brandFilter.value
 const sort=document.getElementById("sort").value
 
 if(search){
-
 list=list.filter(p=>p.name.toLowerCase().includes(search))
-
 }
 
 if(brand){
-
 list=list.filter(p=>p.brand===brand)
-
 }
 
 if(sort==="low"){
-
 list.sort((a,b)=>precio(a.base)-precio(b.base))
-
 }
 
 if(sort==="high"){
-
 list.sort((a,b)=>precio(b.base)-precio(a.base))
-
 }
 
 render(list)
