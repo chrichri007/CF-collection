@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Perfume Essential</title>
 
@@ -12,32 +12,60 @@
 body{
 margin:0;
 font-family:Arial;
-background:#0b0b0b;
 color:white;
+
+/* fondo marmol */
+
+background:
+radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06), transparent 40%),
+radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05), transparent 40%),
+linear-gradient(135deg,#0b0b0b,#1a1a1a,#0f0f0f);
 }
 
 header{
 text-align:center;
-padding:30px;
-font-size:32px;
+padding:40px;
+font-size:34px;
 font-weight:bold;
+letter-spacing:2px;
 }
 
-.search{
-text-align:center;
-margin-bottom:20px;
+/* logos */
+
+.brands{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+padding:20px;
+opacity:0.8;
 }
 
-.search input{
+.brands img{
+height:35px;
+}
+
+/* controles */
+
+.controls{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+justify-content:center;
+padding:20px;
+}
+
+input,select{
 padding:10px;
-width:250px;
 border-radius:8px;
 border:none;
 }
 
+/* grid */
+
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
 padding:20px;
 }
@@ -46,21 +74,36 @@ padding:20px;
 background:#111;
 border-radius:12px;
 border:1px solid #333;
-padding:15px;
-text-align:center;
+overflow:hidden;
 }
 
 .card img{
 width:100%;
-height:200px;
+height:220px;
 object-fit:contain;
+background:black;
+}
+
+.content{
+padding:15px;
+}
+
+.name{
+font-size:18px;
+font-weight:bold;
+}
+
+.specs{
+color:#aaa;
+font-size:14px;
+margin-top:4px;
 }
 
 .price{
 color:#ffd700;
-font-size:18px;
-margin:10px 0;
 font-weight:bold;
+margin:10px 0;
+font-size:20px;
 }
 
 button{
@@ -70,6 +113,23 @@ padding:10px;
 border-radius:8px;
 font-weight:bold;
 cursor:pointer;
+width:100%;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:15px;
+border-radius:50px;
+font-weight:bold;
+text-decoration:none;
 }
 
 </style>
@@ -80,11 +140,38 @@ cursor:pointer;
 
 <header>Perfume Essential</header>
 
-<div class="search">
-<input type="text" id="search" placeholder="Buscar perfume...">
+<div class="brands">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Versace_logo.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Armani_logo.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Dior_logo.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Hugo_Boss_logo.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Paco_Rabanne_logo.svg">
+
+</div>
+
+<div class="controls">
+
+<input id="search" placeholder="Buscar perfume">
+
+<select id="brandFilter">
+<option value="">Todas las marcas</option>
+</select>
+
+<select id="sort">
+<option value="">Ordenar</option>
+<option value="low">Precio menor</option>
+<option value="high">Precio mayor</option>
+</select>
+
 </div>
 
 <div class="grid" id="catalog"></div>
+
+<a class="whatsapp" target="_blank"
+href="https://wa.me/19563371082">
+WhatsApp
+</a>
 
 <script>
 
@@ -100,118 +187,45 @@ return Math.round(base*1.15)
 
 }
 
-const perfumes=[
+const basePerfumes=[
 
-{
-name:"Nautica Voyage",
-brand:"Nautica",
-base:242,
-img:"https://m.media-amazon.com/images/I/71m4iJqJY6L._AC_UF1000,1000_QL80_.jpg"
-},
+{name:"Nautica Voyage",brand:"Nautica",type:"EDT",size:"100ml",base:242,img:"https://m.media-amazon.com/images/I/71m4iJqJY6L.jpg"},
 
-{
-name:"Versace Eros",
-brand:"Versace",
-base:1054,
-img:"https://m.media-amazon.com/images/I/61K8ouYrHeL.jpg"
-},
+{name:"Versace Eros",brand:"Versace",type:"EDP",size:"100ml",base:1054,img:"https://m.media-amazon.com/images/I/61K8ouYrHeL.jpg"},
 
-{
-name:"Versace Dylan Blue",
-brand:"Versace",
-base:887,
-img:"https://m.media-amazon.com/images/I/61mH0U9sFCL.jpg"
-},
+{name:"Versace Dylan Blue",brand:"Versace",type:"EDT",size:"100ml",base:887,img:"https://m.media-amazon.com/images/I/61mH0U9sFCL.jpg"},
 
-{
-name:"Invictus",
-brand:"Paco Rabanne",
-base:1388,
-img:"https://m.media-amazon.com/images/I/71dZqv1A0GL.jpg"
-},
+{name:"Invictus",brand:"Paco Rabanne",type:"EDT",size:"100ml",base:1388,img:"https://m.media-amazon.com/images/I/71dZqv1A0GL.jpg"},
 
-{
-name:"Acqua Di Gio",
-brand:"Armani",
-base:1590,
-img:"https://m.media-amazon.com/images/I/61g8QvQ8SQL.jpg"
-},
+{name:"Acqua Di Gio",brand:"Armani",type:"EDT",size:"100ml",base:1590,img:"https://m.media-amazon.com/images/I/61g8QvQ8SQL.jpg"},
 
-{
-name:"Montblanc Explorer",
-brand:"Montblanc",
-base:790,
-img:"https://m.media-amazon.com/images/I/61dJ5pHfWnL.jpg"
-},
+{name:"Montblanc Explorer",brand:"Montblanc",type:"EDP",size:"100ml",base:790,img:"https://m.media-amazon.com/images/I/61dJ5pHfWnL.jpg"},
 
-{
-name:"Afnan 9PM",
-brand:"Afnan",
-base:525,
-img:"https://m.media-amazon.com/images/I/61v+4Wc9fAL.jpg"
-},
+{name:"Afnan 9PM",brand:"Afnan",type:"EDP",size:"100ml",base:525,img:"https://m.media-amazon.com/images/I/61v+4Wc9fAL.jpg"},
 
-{
-name:"Lattafa Asad",
-brand:"Lattafa",
-base:479,
-img:"https://m.media-amazon.com/images/I/61QF9W6N6HL.jpg"
-},
+{name:"Lattafa Asad",brand:"Lattafa",type:"EDP",size:"100ml",base:479,img:"https://m.media-amazon.com/images/I/61QF9W6N6HL.jpg"},
 
-{
-name:"Bharara King",
-brand:"Bharara",
-base:1060,
-img:"https://m.media-amazon.com/images/I/61Z2pVwJbJL.jpg"
-},
+{name:"Bharara King",brand:"Bharara",type:"EDP",size:"100ml",base:1060,img:"https://m.media-amazon.com/images/I/61Z2pVwJbJL.jpg"},
 
-{
-name:"Jean Paul Gaultier Le Male",
-brand:"Jean Paul Gaultier",
-base:1500,
-img:"https://m.media-amazon.com/images/I/71xV8Kf8WGL.jpg"
-},
-
-{
-name:"Boss Bottled",
-brand:"Hugo Boss",
-base:767,
-img:"https://m.media-amazon.com/images/I/61Hj2tY+PrL.jpg"
-},
-
-{
-name:"Hawas for Him",
-brand:"Rasasi",
-base:631,
-img:"https://m.media-amazon.com/images/I/61Rk+Uu9cBL.jpg"
-},
-
-{
-name:"Dolce Gabbana King",
-brand:"Dolce Gabbana",
-base:1017,
-img:"https://m.media-amazon.com/images/I/71tqkXq6XHL.jpg"
-},
-
-{
-name:"Davidoff Cool Water",
-brand:"Davidoff",
-base:700,
-img:"https://m.media-amazon.com/images/I/71Pz1kP7KpL.jpg"
-}
+{name:"Le Male",brand:"Jean Paul Gaultier",type:"EDT",size:"125ml",base:1500,img:"https://m.media-amazon.com/images/I/71xV8Kf8WGL.jpg"}
 
 ]
 
-while(perfumes.length<200){
-perfumes.push(perfumes[Math.floor(Math.random()*perfumes.length)])
+const perfumes=[]
+
+for(let i=0;i<30;i++){
+basePerfumes.forEach(p=>{
+perfumes.push({...p})
+})
 }
 
-function mostrar(lista){
-
 const catalog=document.getElementById("catalog")
+
+function render(list){
+
 catalog.innerHTML=""
 
-lista.forEach(p=>{
+list.forEach(p=>{
 
 const sell=precio(p.base)
 
@@ -221,7 +235,17 @@ catalog.innerHTML+=`
 
 <img src="${p.img}">
 
-<h3>${p.name}</h3>
+<div class="content">
+
+<div class="name">${p.name}</div>
+
+<div class="specs">
+
+Marca: ${p.brand}<br>
+Tipo: ${p.type}<br>
+Tamaño: ${p.size}
+
+</div>
 
 <div class="price">$${sell} MXN</div>
 
@@ -233,26 +257,65 @@ Comprar
 
 </div>
 
+</div>
+
 `
 
 })
 
 }
 
-mostrar(perfumes)
+render(perfumes)
 
-document.getElementById("search").addEventListener("input",e=>{
+const brands=[...new Set(perfumes.map(p=>p.brand))]
 
-const text=e.target.value.toLowerCase()
+const brandFilter=document.getElementById("brandFilter")
 
-const filtered=perfumes.filter(p=>
-p.name.toLowerCase().includes(text) ||
-p.brand.toLowerCase().includes(text)
-)
+brands.forEach(b=>{
 
-mostrar(filtered)
+brandFilter.innerHTML+=<option>${b}</option>
 
 })
+
+function update(){
+
+let list=[...perfumes]
+
+const search=document.getElementById("search").value.toLowerCase()
+const brand=brandFilter.value
+const sort=document.getElementById("sort").value
+
+if(search){
+
+list=list.filter(p=>p.name.toLowerCase().includes(search))
+
+}
+
+if(brand){
+
+list=list.filter(p=>p.brand===brand)
+
+}
+
+if(sort==="low"){
+
+list.sort((a,b)=>precio(a.base)-precio(b.base))
+
+}
+
+if(sort==="high"){
+
+list.sort((a,b)=>precio(b.base)-precio(a.base))
+
+}
+
+render(list)
+
+}
+
+document.getElementById("search").addEventListener("input",update)
+brandFilter.addEventListener("change",update)
+document.getElementById("sort").addEventListener("change",update)
 
 </script>
 
