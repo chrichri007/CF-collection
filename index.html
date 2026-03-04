@@ -1,0 +1,411 @@
+<style>
+  :root{
+    --bg:#07070c;
+    --card:#0e0f17;
+    --card2:#0b0c12;
+    --text:#f2f4ff;
+    --muted:#a9acc0;
+    --line:rgba(255,255,255,.08);
+    --gold1:#ffd37a;
+    --gold2:#b8872b;
+    --ice:#4de1ff;
+    --shadow: 0 18px 70px rgba(0,0,0,.65);
+    --r:18px;
+  }
+  .lux-wrap{max-width:1120px;margin:0 auto;padding:18px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text)}
+  .lux-bg{
+    background:
+      radial-gradient(1000px 420px at 12% 0%, rgba(255,211,122,.18), transparent 60%),
+      radial-gradient(900px 380px at 88% 10%, rgba(77,225,255,.10), transparent 60%),
+      linear-gradient(180deg, #05050a, var(--bg));
+    border-radius:22px;
+    border:1px solid var(--line);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  .lux-hero{padding:22px 18px 14px;border-bottom:1px solid var(--line)}
+  .lux-top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .lux-brand{display:flex;gap:10px;align-items:center}
+  .lux-dot{
+    width:12px;height:12px;border-radius:999px;
+    background:linear-gradient(90deg,var(--gold1),var(--gold2));
+    box-shadow:0 0 26px rgba(255,211,122,.35);
+  }
+  .lux-title{margin:0;font-size:30px;letter-spacing:.3px}
+  .lux-sub{margin:6px 0 0;color:var(--muted)}
+  .lux-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .lux-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:10px 12px;border-radius:14px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.03);
+    color:var(--text); text-decoration:none; font-weight:800;
+    transition:.2s transform ease, .2s filter ease;
+  }
+  .lux-btn:hover{transform:translateY(-1px);filter:brightness(1.05)}
+  .lux-btn.gold{
+    border:0;color:#0a0a0f;
+    background:linear-gradient(90deg,var(--gold1),var(--gold2));
+    box-shadow:0 14px 40px rgba(255,211,122,.18);
+  }
+  .lux-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .lux-badge{
+    font-size:12px;padding:7px 10px;border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.03);
+    color:var(--muted);
+  }
+  .lux-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .lux-chip{
+    font-size:13px;padding:8px 10px;border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.03);
+    color:var(--text); text-decoration:none;
+  }
+  .lux-chip:hover{border-color:rgba(255,255,255,.18)}
+  .lux-body{padding:18px}
+  .lux-section{margin-top:10px}
+  .lux-h2{margin:18px 0 10px;font-size:18px;letter-spacing:.2px}
+  .lux-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media (max-width:940px){.lux-grid{grid-template-columns:1fr}}
+  .lux-card{
+    border:1px solid var(--line);
+    border-radius: var(--r);
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    overflow:hidden;
+    box-shadow: 0 14px 50px rgba(0,0,0,.35);
+  }
+  .lux-img{
+    height:150px;
+    background:
+      radial-gradient(400px 160px at 20% 10%, rgba(255,211,122,.25), transparent 55%),
+      radial-gradient(420px 170px at 80% 20%, rgba(77,225,255,.12), transparent 60%),
+      linear-gradient(135deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
+    border-bottom:1px solid var(--line);
+  }
+  .lux-content{padding:12px 12px 14px}
+  .lux-name{margin:0 0 6px;font-weight:900}
+  .lux-meta{margin:0;color:var(--muted);font-size:13px}
+  .lux-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+  .lux-tag{
+    font-size:12px;padding:6px 8px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.10);
+    background:rgba(0,0,0,.25);
+    color:rgba(255,255,255,.88);
+  }
+  .lux-price{margin:10px 0 10px;font-weight:900}
+  .lux-row{display:flex;gap:10px;flex-wrap:wrap}
+  .lux-mini{
+    padding:9px 10px;border-radius:12px;border:1px solid var(--line);
+    background:rgba(255,255,255,.03);color:var(--text);text-decoration:none;font-weight:800;font-size:13px;
+  }
+  .lux-mini.gold{border:0;background:linear-gradient(90deg,var(--gold1),var(--gold2));color:#0a0a0f}
+  .lux-note{margin:14px 0 0;color:var(--muted);font-size:13px}
+  .lux-info{
+    margin-top:16px;padding:14px;border-radius:18px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.03);
+  }
+  details.lux-faq{
+    margin-top:10px;border:1px solid var(--line);
+    background:rgba(0,0,0,.35);border-radius:16px;padding:10px 12px;
+  }
+  details.lux-faq summary{cursor:pointer;font-weight:900}
+  .lux-small{color:var(--muted);font-size:13px;margin:8px 0 0}
+</style>
+
+<div class="lux-wrap">
+  <div class="lux-bg">
+
+    <div class="lux-hero">
+      <div class="lux-top">
+        <div>
+          <div class="lux-brand">
+            <span class="lux-dot"></span>
+            <h1 class="lux-title">Perfume Essential</h1>
+          </div>
+          <p class="lux-sub">Boutique • Catálogo premium • Pide por WhatsApp en 1 minuto</p>
+        </div>
+        <div class="lux-actions">
+          <a class="lux-btn gold" target="_blank" rel="noopener"
+             href="https://wa.me/528673149925?text=Hola%20quiero%20informaci%C3%B3n%20de%20disponibilidad%2C%20pago%20y%20entrega">
+            📲 Pedir por WhatsApp
+          </a>
+          <a class="lux-btn" href="#como-comprar">🛒 Cómo comprar</a>
+        </div>
+      </div>
+
+      <div class="lux-badges">
+        <span class="lux-badge">✅ Perfumes originales</span>
+        <span class="lux-badge">📦 Envíos a México</span>
+        <span class="lux-badge">💳 Pago seguro</span>
+        <span class="lux-badge">🧾 Pregunta por disponibilidad</span>
+      </div>
+
+      <div class="lux-nav">
+        <a class="lux-chip" href="#mas-vendidos">🔥 Más vendidos</a>
+        <a class="lux-chip" href="#disenador">🕴️ Diseñador</a>
+        <a class="lux-chip" href="#arabes">🌙 Árabes</a>
+        <a class="lux-chip" href="#nicho">👑 Nicho</a>
+        <a class="lux-chip" href="#dama">💖 Dama</a>
+      </div>
+    </div>
+
+    <div class="lux-body">
+
+      <!-- MÁS VENDIDOS -->
+      <div class="lux-section" id="mas-vendidos">
+        <h2 class="lux-h2">🔥 Más vendidos</h2>
+        <div class="lux-grid">
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Dior Sauvage EDP</p>
+              <p class="lux-meta">100 ml • Versátil • Diario / Noche</p>
+              <div class="lux-tags">
+                <span class="lux-tag">🌿 Fresco</span><span class="lux-tag">🧴 Limpio</span><span class="lux-tag">🌙 Noche</span>
+              </div>
+              <div class="lux-price">$3,200 MXN • $156 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Dior%20Sauvage%20EDP%20100ml%20%243%2C200%20MXN">
+                  Pedir
+                </a>
+                <a class="lux-mini" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20%C2%BFhay%20disponibilidad%20de%20Dior%20Sauvage%20EDP%20100ml%3F">
+                  Disponibilidad
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Acqua Di Gio Parfum</p>
+              <p class="lux-meta">125 ml • Elegante • Oficina</p>
+              <div class="lux-tags">
+                <span class="lux-tag">🌊 Acuático</span><span class="lux-tag">🕴️ Formal</span><span class="lux-tag">☀️ Diario</span>
+              </div>
+              <div class="lux-price">$2,900 MXN • $141 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Acqua%20Di%20Gio%20Parfum%20125ml%20%242%2C900%20MXN">
+                  Pedir
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Azzaro The Most Wanted Parfum</p>
+              <p class="lux-meta">100 ml • Intenso • Noche / Fiesta</p>
+              <div class="lux-tags">
+                <span class="lux-tag">🔥 Dulce</span><span class="lux-tag">🌙 Noche</span><span class="lux-tag">🥂 Fiesta</span>
+              </div>
+              <div class="lux-price">$2,600 MXN • $127 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Azzaro%20The%20Most%20Wanted%20Parfum%20100ml%20%242%2C600%20MXN">
+                  Pedir
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <p class="lux-note">¿No ves el perfume que buscas? Mándame WhatsApp y te confirmo disponibilidad y entrega.</p>
+      </div>
+
+      <!-- DISEÑADOR -->
+      <div class="lux-section" id="disenador">
+        <h2 class="lux-h2">🕴️ Diseñador</h2>
+        <div class="lux-grid">
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">JPG Le Male Elixir</p>
+              <p class="lux-meta">125 ml • Dulce/avainillado • Noche</p>
+              <div class="lux-price">$3,100 MXN • $151 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20JPG%20Le%20Male%20Elixir%20125ml%20%243%2C100%20MXN">Pedir</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Valentino Uomo Born in Roma</p>
+              <p class="lux-meta">100 ml • Moderno • Diario/Noche</p>
+              <div class="lux-price">$2,400 MXN • $117 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Valentino%20Uomo%20Born%20in%20Roma%20100ml%20%242%2C400%20MXN">Pedir</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Spicebomb Extreme</p>
+              <p class="lux-meta">90 ml • Especiado • Frío/Noche</p>
+              <div class="lux-price">$2,400 MXN • $117 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Spicebomb%20Extreme%2090ml%20%242%2C400%20MXN">Pedir</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ÁRABES -->
+      <div class="lux-section" id="arabes">
+        <h2 class="lux-h2">🌙 Árabes</h2>
+        <div class="lux-grid">
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Afnan 9PM</p>
+              <p class="lux-meta">100 ml • Dulce • Noche</p>
+              <div class="lux-price">$850 MXN • $41 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Afnan%209PM%20100ml%20%24850%20MXN">Pedir</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Lattafa Khamrah</p>
+              <p class="lux-meta">100 ml • Gourmand • Frío</p>
+              <div class="lux-price">$925 MXN • $45 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Lattafa%20Khamrah%20100ml%20%24925%20MXN">Pedir</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Armaf Odyssey Mandarin Sky</p>
+              <p class="lux-meta">200 ml • Dulce • Diario</p>
+              <div class="lux-price">$1,300 MXN • $64 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Armaf%20Odyssey%20Mandarin%20Sky%20200ml%20%241%2C300%20MXN">Pedir</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- NICHO -->
+      <div class="lux-section" id="nicho">
+        <h2 class="lux-h2">👑 Nicho</h2>
+        <div class="lux-grid">
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Creed Viking</p>
+              <p class="lux-meta">100 ml • Premium • Elegante</p>
+              <div class="lux-price">$7,000 MXN • $342 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Creed%20Viking%20100ml%20%247%2C000%20MXN">Pedir</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Creed Silver Mountain Water</p>
+              <p class="lux-meta">100 ml • Fresco • Diario</p>
+              <div class="lux-price">$7,000 MXN • $342 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Creed%20Silver%20Mountain%20Water%20100ml%20%247%2C000%20MXN">Pedir</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DAMA -->
+      <div class="lux-section" id="dama">
+        <h2 class="lux-h2">💖 Dama</h2>
+        <div class="lux-grid">
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Burberry Her EDP</p>
+              <p class="lux-meta">100 ml • Dulce/Frutal • Diario</p>
+              <div class="lux-price">$2,700 MXN • $132 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Burberry%20Her%20EDP%20100ml%20%242%2C700%20MXN">Pedir</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">Dior Dolce Vita</p>
+              <p class="lux-meta">100 ml • Clásico • Elegante</p>
+              <div class="lux-price">$2,400 MXN • $118 USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener"
+                   href="https://wa.me/528673149925?text=Hola%20quiero%20Dior%20Dolce%20Vita%20100ml%20%242%2C400%20MXN">Pedir</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CÓMO COMPRAR -->
+      <div class="lux-section" id="como-comprar">
+        <h2 class="lux-h2">🛒 Cómo comprar</h2>
+        <div class="lux-info">
+          <div class="lux-small">
+            <b>1)</b> Elige tu perfume → <b>2)</b> Presiona “Pedir” → <b>3)</b> Te confirmo disponibilidad, pago y entrega por WhatsApp.
+            <br><b>WhatsApp:</b> +52 867 314 9925
+          </div>
+        </div>
+
+        <details class="lux-faq">
+          <summary>📦 ¿Haces envíos?</summary>
+          <p class="lux-small">Sí. Dime tu ciudad y te digo costo y tiempo estimado.</p>
+        </details>
+        <details class="lux-faq">
+          <summary>💳 ¿Métodos de pago?</summary>
+          <p class="lux-small">Te paso opciones por WhatsApp (transferencia / depósito / etc.).</p>
+        </details>
+        <details class="lux-faq">
+          <summary>✅ ¿Originales?</summary>
+          <p class="lux-small">Sí. Si quieres, te mando fotos reales del lote y detalles por WhatsApp.</p>
+        </details>
+      </div>
+
+    </div>
+  </div>
+</div>
