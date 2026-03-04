@@ -1,354 +1,388 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#07070c" />
+  <title>Perfume Essential | Catálogo</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root{
+      --bg:#07070c;
+      --text:#f2f4ff;
+      --muted:#a9acc0;
+      --line:rgba(255,255,255,.10);
+      --line2:rgba(255,255,255,.18);
+      --gold1:#ffd37a;
+      --gold2:#b8872b;
+      --shadow: 0 18px 70px rgba(0,0,0,.65);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 420px at 12% 0%, rgba(255,211,122,.18), transparent 60%),
+        radial-gradient(900px 380px at 88% 10%, rgba(77,225,255,.10), transparent 60%),
+        linear-gradient(180deg, #05050a, var(--bg));
+      min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none}
 
-<title>Perfume Essential</title>
+    .lux-wrap{max-width:1120px;margin:0 auto;padding:18px}
+    .lux-bg{
+      border-radius:22px;
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+    }
 
-<style>
+    .lux-hero{padding:22px 18px 14px;border-bottom:1px solid var(--line)}
+    .lux-top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .lux-brand{display:flex;gap:10px;align-items:center}
+    .lux-dot{
+      width:12px;height:12px;border-radius:999px;
+      background:linear-gradient(90deg,var(--gold1),var(--gold2));
+      box-shadow:0 0 26px rgba(255,211,122,.35);
+      flex:0 0 auto;
+    }
+    .lux-title{margin:0;font-size:clamp(24px, 3vw, 34px);letter-spacing:.3px}
+    .lux-sub{margin:6px 0 0;color:var(--muted);font-size:14px}
 
-body{
-margin:0;
-font-family:Arial;
-background:#0b0b0b;
-color:white;
-}
+    .lux-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .lux-btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:12px 14px;border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);font-weight:900;
+      transition:.2s transform ease, .2s filter ease, .2s border-color ease;
+      min-height:44px;
+    }
+    .lux-btn:hover{transform:translateY(-1px);filter:brightness(1.06);border-color:var(--line2)}
+    .lux-btn.gold{
+      border:0;color:#0a0a0f;
+      background:linear-gradient(90deg,var(--gold1),var(--gold2));
+      box-shadow:0 14px 40px rgba(255,211,122,.18);
+    }
 
-.lux-wrap{
-max-width:1200px;
-margin:auto;
-padding:20px;
-}
+    .lux-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .lux-badge{
+      font-size:12px;padding:7px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      white-space:nowrap;
+    }
 
-.lux-top{
-display:flex;
-flex-wrap:wrap;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-}
+    .lux-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .lux-chip{
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.25);
+      color:var(--text);
+      transition:.2s border-color ease,.2s transform ease;
+    }
+    .lux-chip:hover{border-color:var(--line2);transform:translateY(-1px)}
 
-.lux-title{
-margin:0;
-font-size:32px;
-}
+    .lux-body{padding:18px}
+    .lux-h2{margin:18px 0 12px;font-size:18px;letter-spacing:.2px}
+    .lux-note{margin:10px 0 0;color:var(--muted);font-size:13px}
 
-.lux-sub{
-color:#aaa;
-}
+    .lux-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    @media (max-width: 980px){ .lux-grid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width: 680px){ .lux-grid{grid-template-columns:1fr} }
 
-.lux-btn{
-padding:10px 15px;
-border-radius:8px;
-border:1px solid #555;
-text-decoration:none;
-color:white;
-margin-left:10px;
-}
+    .lux-card{
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      overflow:hidden;
+      box-shadow: 0 14px 50px rgba(0,0,0,.35);
+    }
 
-.gold{
-background:#d4af37;
-color:black;
-border:none;
-}
+    /* “Imagen” placeholder (sin fotos) */
+    .lux-img{
+      height:58px;
+      border-bottom:1px solid var(--line);
+      background:
+        radial-gradient(520px 180px at 20% 10%, rgba(255,211,122,.22), transparent 55%),
+        radial-gradient(520px 180px at 80% 20%, rgba(77,225,255,.10), transparent 60%),
+        linear-gradient(135deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
+    }
 
-.lux-badges{
-margin:20px 0;
-}
+    .lux-content{padding:12px 12px 14px}
+    .lux-name{margin:0 0 6px;font-weight:950;letter-spacing:.2px}
+    .lux-meta{margin:0;color:var(--muted);font-size:13px;line-height:1.35}
+    .lux-tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+    .lux-tag{
+      font-size:12px;
+      padding:6px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.22);
+      color:rgba(255,255,255,.92);
+      white-space:nowrap;
+    }
+    .lux-price{
+      margin:10px 0 10px;
+      font-weight:950;
+      background:linear-gradient(90deg,var(--gold1),var(--gold2));
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+    .lux-row{display:flex;gap:10px;flex-wrap:wrap}
+    .lux-mini{
+      padding:11px 12px;border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      font-weight:900;font-size:13px;
+      min-height:44px;
+      display:inline-flex;align-items:center;justify-content:center;
+      flex:1 1 auto;
+    }
+    .lux-mini.gold{
+      border:0;background:linear-gradient(90deg,var(--gold1),var(--gold2));
+      color:#0a0a0f;
+    }
 
-.lux-badge{
-background:#111;
-padding:8px 12px;
-margin-right:10px;
-border-radius:6px;
-border:1px solid #333;
-}
+    .lux-info{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      padding:14px;
+    }
+    .lux-small{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
 
-.lux-nav{
-margin:20px 0;
-}
-
-.lux-chip{
-background:#111;
-padding:8px 12px;
-margin-right:10px;
-border-radius:20px;
-border:1px solid #333;
-text-decoration:none;
-color:white;
-}
-
-.lux-h2{
-margin-top:40px;
-border-bottom:1px solid #333;
-padding-bottom:10px;
-}
-
-.lux-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-margin-top:20px;
-}
-
-.lux-card{
-background:#111;
-border-radius:12px;
-border:1px solid #333;
-overflow:hidden;
-}
-
-.lux-img{
-height:150px;
-background:#000;
-}
-
-.lux-content{
-padding:15px;
-}
-
-.lux-name{
-font-size:18px;
-font-weight:bold;
-margin:0;
-}
-
-.lux-meta{
-color:#aaa;
-font-size:14px;
-}
-
-.lux-tags{
-margin:10px 0;
-}
-
-.lux-tag{
-background:#222;
-padding:4px 8px;
-border-radius:6px;
-margin-right:6px;
-font-size:12px;
-}
-
-.lux-price{
-color:#d4af37;
-font-weight:bold;
-margin-bottom:10px;
-}
-
-.lux-mini{
-padding:8px 12px;
-border-radius:6px;
-text-decoration:none;
-color:black;
-background:#d4af37;
-font-weight:bold;
-}
-
-.lux-info{
-background:#111;
-padding:15px;
-border-radius:10px;
-border:1px solid #333;
-}
-
-</style>
-
+    .lux-wa-float{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      z-index:9999;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(90deg,var(--gold1),var(--gold2));
+      color:#0a0a0f;
+      font-weight:950;
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      min-height:44px;
+    }
+    .lux-wa-float span{display:inline}
+    @media (max-width: 420px){
+      .lux-wa-float span{display:none}
+      .lux-wa-float{padding:12px 13px}
+    }
+  </style>
 </head>
 
 <body>
+  <a class="lux-wa-float"
+     href="https://wa.me/19563371082?text=Hola%20quiero%20informaci%C3%B3n%20de%20disponibilidad%2C%20pago%20y%20entrega"
+     target="_blank" rel="noopener">📲 <span>WhatsApp</span></a>
 
-<div class="lux-wrap">
+  <div class="lux-wrap">
+    <div class="lux-bg">
 
-<div class="lux-top">
+      <div class="lux-hero">
+        <div class="lux-top">
+          <div>
+            <div class="lux-brand">
+              <span class="lux-dot"></span>
+              <h1 class="lux-title">Perfume Essential</h1>
+            </div>
+            <p class="lux-sub">Boutique • Catálogo premium • Pide por WhatsApp en 1 minuto</p>
+          </div>
 
-<div>
-<h1 class="lux-title">Perfume Essential</h1>
-<p class="lux-sub">Boutique • Catálogo premium • Pide por WhatsApp en 1 minuto</p>
-</div>
+          <div class="lux-actions">
+            <a class="lux-btn gold" target="_blank" rel="noopener"
+               href="https://wa.me/19563371082?text=Hola%20quiero%20informaci%C3%B3n%20de%20disponibilidad%2C%20pago%20y%20entrega">
+              📲 Pedir por WhatsApp
+            </a>
+            <a class="lux-btn" href="#como-comprar">🛒 Cómo comprar</a>
+          </div>
+        </div>
 
-<div>
-<a class="lux-btn gold"
-href="https://wa.me/19563371082?text=Hola%20quiero%20información%20de%20perfumes"
-target="_blank">
-📲 Pedir por WhatsApp
-</a>
-</div>
+        <div class="lux-badges">
+          <span class="lux-badge">✅ Perfumes originales</span>
+          <span class="lux-badge">📦 Envíos</span>
+          <span class="lux-badge">💳 Pago seguro</span>
+          <span class="lux-badge">🧾 Pregunta por disponibilidad</span>
+        </div>
 
-</div>
+        <div class="lux-nav">
+          <a class="lux-chip" href="#mas-vendidos">🔥 Más vendidos</a>
+          <a class="lux-chip" href="#disenador">🕴️ Diseñador</a>
+          <a class="lux-chip" href="#arabes">🌙 Árabes</a>
+          <a class="lux-chip" href="#noche">🌙 Noche</a>
+          <a class="lux-chip" href="#dama">💖 Dama</a>
+        </div>
+      </div>
 
-<div class="lux-badges">
-<span class="lux-badge">Perfumes originales</span>
-<span class="lux-badge">Envíos a México</span>
-<span class="lux-badge">Pago seguro</span>
-</div>
+      <div class="lux-body" id="catalog"></div>
 
-<div class="lux-nav">
-<a class="lux-chip" href="#mas-vendidos">🔥 Más vendidos</a>
-<a class="lux-chip" href="#disenador">🕴️ Diseñador</a>
-<a class="lux-chip" href="#arabes">🌙 Árabes</a>
-</div>
+    </div>
+  </div>
 
-<!-- MAS VENDIDOS -->
+  <script>
+    const PHONE = "19563371082";
 
-<div id="mas-vendidos">
+    function mxn(n){
+      return n.toLocaleString("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0});
+    }
+    function wa(text){
+      return https://wa.me/${PHONE}?text=${encodeURIComponent(text)};
+    }
 
-<h2 class="lux-h2">🔥 Más vendidos</h2>
+    // ✅ Edita precios/stock cuando quieras
+    const sections = [
+      {
+        id:"mas-vendidos",
+        title:"🔥 Más vendidos",
+        note:"¿No ves el perfume que buscas? Mándame WhatsApp y te confirmo disponibilidad y entrega.",
+        items:[
+          {name:"Dior Sauvage EDP", ml:"100 ml", type:"EDP", use:"Diario / Noche", vibe:["🌿 Fresco","🧴 Limpio","🌙 Noche"], price:3200},
+          {name:"Acqua Di Gio Parfum", ml:"125 ml", type:"Parfum", use:"Oficina / Diario", vibe:["🌊 Acuático","🕴️ Formal","☀️ Diario"], price:2900},
+          {name:"Azzaro The Most Wanted", ml:"100 ml", type:"Parfum", use:"Noche / Fiesta", vibe:["🔥 Dulce","🌙 Noche","🥂 Fiesta"], price:2600},
+          {name:"Versace Eros", ml:"100 ml", type:"EDP", use:"Fiesta / Noche", vibe:["🍬 Dulce","🌙 Noche","🥂 Fiesta"], price:1800},
+          {name:"Invictus", ml:"100 ml", type:"EDT", use:"Diario / Gym", vibe:["🏆 Deportivo","☀️ Diario","🧼 Limpio"], price:1700},
+          {name:"Montblanc Explorer", ml:"100 ml", type:"EDP", use:"Diario / Oficina", vibe:["🧭 Versátil","🕴️ Formal","☀️ Diario"], price:1100},
+          {name:"Nautica Voyage", ml:"100 ml", type:"EDT", use:"Diario / Calor", vibe:["🌊 Fresco","☀️ Diario","💸 Barato"], price:450},
+          {name:"Hawas for Him", ml:"100 ml", type:"EDP", use:"Noche / Verano", vibe:["🌊 Acuático","🌙 Noche","🔥 Proyección"], price:1100},
+          {name:"Jean Paul Gaultier Le Male", ml:"125 ml", type:"EDT", use:"Noche / Citas", vibe:["🍯 Dulce","🌙 Noche","🧥 Frío"], price:2200},
+          {name:"YSL Y", ml:"100 ml", type:"EDP", use:"Diario / Oficina", vibe:["🧼 Limpio","🕴️ Formal","☀️ Diario"], price:2600},
+          {name:"Bleu de Chanel", ml:"100 ml", type:"EDP", use:"Oficina / Diario", vibe:["🧼 Limpio","🕴️ Formal","🧭 Versátil"], price:3300},
+          {name:"1 Million", ml:"100 ml", type:"EDT", use:"Fiesta / Noche", vibe:["🍬 Dulce","🥂 Fiesta","🌙 Noche"], price:2300},
+        ]
+      },
 
-<div class="lux-grid">
+      {
+        id:"disenador",
+        title:"🕴️ Diseñador",
+        note:"Diseñador: versátiles, elegantes y fáciles de vender.",
+        items:[
+          {name:"Armani Code", ml:"125 ml", type:"EDP", use:"Noche / Formal", vibe:["🕴️ Formal","🌙 Noche","🧥 Frío"], price:2900},
+          {name:"Prada Luna Rossa Carbon", ml:"100 ml", type:"EDT", use:"Diario / Oficina", vibe:["🧼 Limpio","🧭 Versátil","☀️ Diario"], price:2600},
+          {name:"Valentino Uomo Born in Roma", ml:"100 ml", type:"EDT", use:"Diario / Noche", vibe:["🧭 Versátil","🌙 Noche","🍃 Fresco"], price:2800},
+          {name:"Givenchy Gentleman", ml:"100 ml", type:"EDP", use:"Noche / Elegante", vibe:["🕴️ Formal","🌙 Noche","🧥 Frío"], price:2700},
+          {name:"Dolce & Gabbana The One", ml:"100 ml", type:"EDP", use:"Citas / Noche", vibe:["🌙 Noche","🧥 Frío","😎 Sexy"], price:2400},
+          {name:"Versace Dylan Blue", ml:"100 ml", type:"EDT", use:"Diario / Oficina", vibe:["🧼 Limpio","☀️ Diario","🧭 Versátil"], price:1700},
+          {name:"Coach for Men", ml:"100 ml", type:"EDT", use:"Diario", vibe:["☀️ Diario","🧭 Versátil","🍃 Fresco"], price:1400},
+          {name:"Hugo Boss Bottled", ml:"100 ml", type:"EDT", use:"Oficina", vibe:["🕴️ Formal","☀️ Diario","🧭 Versátil"], price:1600},
+          {name:"Paco Rabanne Phantom", ml:"100 ml", type:"EDT", use:"Diario / Noche", vibe:["🤖 Moderno","🍬 Dulce","🌙 Noche"], price:2500},
+          {name:"Carolina Herrera Bad Boy", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🌙 Noche","🔥 Intenso","😎 Sexy"], price:2600},
+          {name:"Dior Homme", ml:"100 ml", type:"EDT", use:"Elegante", vibe:["🕴️ Formal","🧼 Limpio","🧭 Versátil"], price:3100},
+          {name:"Bvlgari Man in Black", ml:"100 ml", type:"EDP", use:"Noche / Frío", vibe:["🧥 Frío","🌙 Noche","🔥 Intenso"], price:2700},
+        ]
+      },
 
-<div class="lux-card">
-<div class="lux-img"></div>
-<div class="lux-content">
-<p class="lux-name">Dior Sauvage EDP</p>
-<p class="lux-meta">100 ml • Versátil</p>
-<div class="lux-tags">
-<span class="lux-tag">Fresco</span>
-<span class="lux-tag">Diario</span>
-</div>
-<div class="lux-price">$3,200 MXN</div>
-<a class="lux-mini"
-href="https://wa.me/19563371082?text=Hola quiero Dior Sauvage EDP">
-Pedir
-</a>
-</div>
-</div>
+      {
+        id:"arabes",
+        title:"🌙 Árabes",
+        note:"Árabes: mucha proyección y buen precio (se venden rápido).",
+        items:[
+          {name:"Lattafa Asad", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🔥 Intenso","🌙 Noche","💸 Best"], price:650},
+          {name:"Afnan 9PM", ml:"100 ml", type:"EDP", use:"Fiesta / Noche", vibe:["🍬 Dulce","🥂 Fiesta","🌙 Noche"], price:750},
+          {name:"Armaf Club de Nuit Intense Man", ml:"105 ml", type:"EDT", use:"Diario / Noche", vibe:["🧼 Limpio","🌙 Noche","🔥 Proyección"], price:950},
+          {name:"Rasasi Hawas", ml:"100 ml", type:"EDP", use:"Verano / Noche", vibe:["🌊 Acuático","🔥 Proyección","🌙 Noche"], price:1100},
+          {name:"Lattafa Fakhar Black", ml:"100 ml", type:"EDP", use:"Diario", vibe:["🧼 Limpio","☀️ Diario","🧭 Versátil"], price:700},
+          {name:"Lattafa Khamrah", ml:"100 ml", type:"EDP", use:"Frío / Noche", vibe:["🍯 Dulce","🧥 Frío","🌙 Noche"], price:950},
+          {name:"Afnan Turathi Blue", ml:"90 ml", type:"EDP", use:"Diario", vibe:["🍃 Fresco","☀️ Diario","🧭 Versátil"], price:1050},
+          {name:"Maison Alhambra Salvo Intense", ml:"100 ml", type:"EDP", use:"Diario", vibe:["🧼 Limpio","☀️ Diario","💸 Best"], price:650},
+          {name:"Al Haramain Detour Noir", ml:"100 ml", type:"EDP", use:"Noche / Frío", vibe:["🧥 Frío","🌙 Noche","😎 Sexy"], price:950},
+          {name:"Armaf Iconic", ml:"105 ml", type:"EDP", use:"Diario", vibe:["🧼 Limpio","🕴️ Formal","🧭 Versátil"], price:1200},
+          {name:"Bharara King", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🔥 Intenso","🌙 Noche","👑 Premium"], price:1400},
+          {name:"Afnan Supremacy NOI", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🔥 Intenso","🌙 Noche","👑 Premium"], price:1550},
+        ]
+      },
 
-<div class="lux-card">
-<div class="lux-img"></div>
-<div class="lux-content">
-<p class="lux-name">Acqua Di Gio Parfum</p>
-<p class="lux-meta">125 ml • Elegante</p>
-<div class="lux-tags">
-<span class="lux-tag">Acuático</span>
-<span class="lux-tag">Formal</span>
-</div>
-<div class="lux-price">$2,900 MXN</div>
-<a class="lux-mini"
-href="https://wa.me/19563371082?text=Hola quiero Acqua Di Gio">
-Pedir
-</a>
-</div>
-</div>
+      {
+        id:"noche",
+        title:"🌙 Noche y Fiesta",
+        note:"Para antro, fiestas y citas.",
+        items:[
+          {name:"Spicebomb Extreme", ml:"90 ml", type:"EDP", use:"Noche / Frío", vibe:["🧥 Frío","🌙 Noche","🔥 Intenso"], price:3200},
+          {name:"JPG Ultra Male", ml:"125 ml", type:"EDT", use:"Fiesta", vibe:["🥂 Fiesta","🍬 Dulce","🌙 Noche"], price:2700},
+          {name:"Stronger With You", ml:"100 ml", type:"EDT", use:"Citas / Noche", vibe:["😎 Sexy","🍯 Dulce","🌙 Noche"], price:2900},
+          {name:"The Most Wanted", ml:"100 ml", type:"EDP", use:"Fiesta", vibe:["🥂 Fiesta","🔥 Dulce","🌙 Noche"], price:2600},
+          {name:"1 Million Elixir", ml:"100 ml", type:"Parfum", use:"Fiesta", vibe:["🥂 Fiesta","🍬 Dulce","🔥 Intenso"], price:3100},
+          {name:"Eros Flame", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🌙 Noche","🔥 Intenso","😎 Sexy"], price:2200},
+          {name:"Bad Boy Cobalt", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🌙 Noche","🔥 Intenso","🥂 Fiesta"], price:2900},
+          {name:"Givenchy Reserve Privée", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🕴️ Formal","🌙 Noche","🧥 Frío"], price:3000},
+          {name:"Armani Code Parfum", ml:"125 ml", type:"Parfum", use:"Formal", vibe:["🕴️ Formal","🌙 Noche","😎 Sexy"], price:3200},
+          {name:"Sauvage Elixir", ml:"60 ml", type:"Elixir", use:"Noche", vibe:["🔥 Proyección","🌙 Noche","👑 Premium"], price:3800},
+          {name:"Oud for Glory", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🪵 Oud","🌙 Noche","🔥 Intenso"], price:1050},
+          {name:"Khamrah Qahwa", ml:"100 ml", type:"EDP", use:"Frío", vibe:["☕ Café","🧥 Frío","🍯 Dulce"], price:1100},
+        ]
+      },
 
-<div class="lux-card">
-<div class="lux-img"></div>
-<div class="lux-content">
-<p class="lux-name">Azzaro The Most Wanted</p>
-<p class="lux-meta">100 ml • Noche</p>
-<div class="lux-tags">
-<span class="lux-tag">Dulce</span>
-<span class="lux-tag">Fiesta</span>
-</div>
-<div class="lux-price">$2,600 MXN</div>
-<a class="lux-mini"
-href="https://wa.me/19563371082?text=Hola quiero Azzaro Most Wanted">
-Pedir
-</a>
-</div>
-</div>
+      {
+        id:"dama",
+        title:"💖 Dama",
+        note:"Opciones que siempre se mueven bien.",
+        items:[
+          {name:"Good Girl", ml:"80 ml", type:"EDP", use:"Noche", vibe:["🌙 Noche","😎 Sexy","🍯 Dulce"], price:3200},
+          {name:"La Vie Est Belle", ml:"100 ml", type:"EDP", use:"Diario / Noche", vibe:["🍬 Dulce","☀️ Diario","🌙 Noche"], price:2900},
+          {name:"Black Opium", ml:"90 ml", type:"EDP", use:"Noche", vibe:["☕ Café","🌙 Noche","🍬 Dulce"], price:3100},
+          {name:"Light Blue", ml:"100 ml", type:"EDT", use:"Diario", vibe:["🍋 Fresco","☀️ Diario","🌊 Verano"], price:2400},
+          {name:"Versace Bright Crystal", ml:"90 ml", type:"EDT", use:"Diario", vibe:["🌸 Floral","☀️ Diario","🧼 Limpio"], price:2200},
+          {name:"Cloud", ml:"100 ml", type:"EDP", use:"Diario", vibe:["🍬 Dulce","☁️ Suave","☀️ Diario"], price:1900},
+          {name:"Yara", ml:"100 ml", type:"EDP", use:"Diario", vibe:["🍓 Dulce","☀️ Diario","💸 Best"], price:700},
+          {name:"Yara Tous", ml:"100 ml", type:"EDP", use:"Diario", vibe:["🥭 Tropical","☀️ Diario","💸 Best"], price:750},
+          {name:"Scandal", ml:"80 ml", type:"EDP", use:"Fiesta", vibe:["🥂 Fiesta","🍯 Dulce","🌙 Noche"], price:2900},
+          {name:"Delina (inspiración)", ml:"100 ml", type:"EDP", use:"Elegante", vibe:["🌸 Floral","👑 Premium","🕴️ Formal"], price:1200},
+          {name:"My Way", ml:"90 ml", type:"EDP", use:"Diario", vibe:["🌸 Floral","☀️ Diario","🧼 Limpio"], price:3000},
+          {name:"Libre", ml:"90 ml", type:"EDP", use:"Diario / Noche", vibe:["🕴️ Elegante","🌙 Noche","☀️ Diario"], price:3200},
+        ]
+      },
+    ];
 
-</div>
+    function cardHTML(p){
+      const msg = Hola quiero ${p.name} ${p.type} ${p.ml} en ${mxn(p.price)}. ¿Hay disponibilidad?;
+      return `
+        <div class="lux-card">
+          <div class="lux-img"></div>
+          <div class="lux-content">
+            <p class="lux-name">${p.name}</p>
+            <p class="lux-meta">${p.ml} • ${p.type} • ${p.use}</p>
+            <div class="lux-tags">${p.vibe.map(t=><span class="lux-tag">${t}</span>).join("")}</div>
+            <div class="lux-price">${mxn(p.price)}</div>
+            <div class="lux-row">
+              <a class="lux-mini gold" target="_blank" rel="noopener" href="${wa(msg)}">Pedir</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
-</div>
-
-<!-- DISEÑADOR -->
-
-<div id="disenador">
-
-<h2 class="lux-h2">🕴️ Diseñador</h2>
-
-<div class="lux-grid">
-
-<div class="lux-card">
-<div class="lux-content">
-<p class="lux-name">Versace Eros</p>
-<p class="lux-meta">100 ml • Fiesta</p>
-<div class="lux-price">$1,800 MXN</div>
-<a class="lux-mini"
-href="https://wa.me/19563371082?text=Hola quiero Versace Eros">
-Pedir
-</a>
-</div>
-</div>
-
-<div class="lux-card">
-<div class="lux-content">
-<p class="lux-name">Invictus</p>
-<p class="lux-meta">100 ml • Deportivo</p>
-<div class="lux-price">$1,700 MXN</div>
-<a class="lux-mini"
-href="https://wa.me/19563371082?text=Hola quiero Invictus">
-Pedir
-</a>
-</div>
-</div>
-
-</div>
-
-</div>
-
-<!-- ARABES -->
-
-<div id="arabes">
-
-<h2 class="lux-h2">🌙 Perfumes Árabes</h2>
-
-<div class="lux-grid">
-
-<div class="lux-card">
-<div class="lux-content">
-<p class="lux-name">Lattafa Asad</p>
-<p class="lux-meta">100 ml • Intenso</p>
-<div class="lux-price">$650 MXN</div>
-<a class="lux-mini"
-href="https://wa.me/19563371082?text=Hola quiero Lattafa Asad">
-Pedir
-</a>
-</div>
-</div>
-
-<div class="lux-card">
-<div class="lux-content">
-<p class="lux-name">Afnan 9PM</p>
-<p class="lux-meta">100 ml • Dulce</p>
-<div class="lux-price">$750 MXN</div>
-<a class="lux-mini"
-href="https://wa.me/19563371082?text=Hola quiero Afnan 9PM">
-Pedir
-</a>
-</div>
-</div>
-
-</div>
-
-</div>
-
-<!-- COMO COMPRAR -->
-
-<div id="como-comprar">
-
-<h2 class="lux-h2">🛒 Cómo comprar</h2>
-
-<div class="lux-info">
-
-<p>
-
-1) Elige tu perfume  
-2) Presiona *Pedir*  
-3) Te confirmo disponibilidad y pago por WhatsApp  
-
-<b>WhatsApp:</b> +1 (956) 337-1082
-
-</p>
-
-</div>
-
-</div>
-
-</div>
-
+    const catalog = document.getElementById("catalog");
+    catalog.innerHTML = sections.map(sec => `
+      <section id="${sec.id}">
+        <h2 class="lux-h2">${sec.title}</h2>
+        <div class="lux-grid">
+          ${sec.items.map(cardHTML).join("")}
+        </div>
+        ${sec.note ? <p class="lux-note">${sec.note}</p> : ``}
+      </section>
+    `).join("") + `
+      <section id="como-comprar" style="margin-top:16px">
+        <h2 class="lux-h2">🛒 Cómo comprar</h2>
+        <div class="lux-info">
+          <p class="lux-small"><b>1)</b> Elige tu perfume → <b>2)</b> “Pedir” → <b>3)</b> Te confirmo disponibilidad, pago y entrega por WhatsApp.<br><b>WhatsApp:</b> +1 (956) 337-1082</p>
+        </div>
+      </section>
+    `;
+  </script>
 </body>
 </html>
