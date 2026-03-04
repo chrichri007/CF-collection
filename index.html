@@ -9,15 +9,19 @@
   <style>
     :root{
       --bg:#07070c;
+      --panel: rgba(0,0,0,.22);
+      --card: rgba(255,255,255,.05);
       --text:#f2f4ff;
       --muted:#a9acc0;
       --line:rgba(255,255,255,.10);
       --line2:rgba(255,255,255,.18);
       --gold1:#ffd37a;
       --gold2:#b8872b;
-      --shadow: 0 18px 70px rgba(0,0,0,.65);
+      --shadow: 0 18px 70px rgba(0,0,0,.60);
       --r:18px;
+      --r2:14px;
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
@@ -31,18 +35,19 @@
       min-height:100vh;
     }
     a{color:inherit;text-decoration:none}
-
-    .lux-wrap{max-width:1120px;margin:0 auto;padding:18px}
+    b{color:#fff}
+    .lux-wrap{max-width:1120px;margin:0 auto;padding:16px}
     .lux-bg{
       border-radius:22px;
       border:1px solid var(--line);
       box-shadow: var(--shadow);
       overflow:hidden;
-      background: rgba(0,0,0,.18);
+      background: var(--panel);
       backdrop-filter: blur(10px);
     }
 
-    .lux-hero{padding:22px 18px 14px;border-bottom:1px solid var(--line)}
+    /* HERO */
+    .lux-hero{padding:20px 16px 12px;border-bottom:1px solid var(--line)}
     .lux-top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
     .lux-brand{display:flex;gap:10px;align-items:center}
     .lux-dot{
@@ -61,8 +66,9 @@
       border:1px solid var(--line);
       background:rgba(255,255,255,.04);
       color:var(--text);font-weight:900;
-      transition:.2s transform ease, .2s filter ease, .2s border-color ease;
+      transition:.2s transform ease,.2s filter ease,.2s border-color ease;
       min-height:44px;
+      white-space:nowrap;
     }
     .lux-btn:hover{transform:translateY(-1px);filter:brightness(1.06);border-color:var(--line2)}
     .lux-btn.gold{
@@ -80,7 +86,16 @@
       white-space:nowrap;
     }
 
-    .lux-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    /* NAV (sticky) */
+    .lux-nav{
+      display:flex;gap:8px;flex-wrap:nowrap;
+      overflow:auto;
+      padding:10px 0 2px;
+      margin-top:12px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width:none;
+    }
+    .lux-nav::-webkit-scrollbar{display:none}
     .lux-chip{
       font-size:13px;
       padding:10px 12px;
@@ -89,13 +104,70 @@
       background:rgba(0,0,0,.25);
       color:var(--text);
       transition:.2s border-color ease,.2s transform ease;
+      white-space:nowrap;
+      flex:0 0 auto;
     }
     .lux-chip:hover{border-color:var(--line2);transform:translateY(-1px)}
+    .lux-sticky{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(7,7,12,.65);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
+      padding:10px 16px;
+    }
+    .lux-sticky-inner{
+      max-width:1120px;
+      margin:0 auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .lux-search{
+      flex:1 1 240px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .lux-input{
+      width:100%;
+      min-width:160px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      outline:none;
+    }
+    .lux-input::placeholder{color:rgba(169,172,192,.85)}
+    .lux-pill{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 12px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.25);
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
 
-    .lux-body{padding:18px}
-    .lux-h2{margin:18px 0 12px;font-size:18px;letter-spacing:.2px}
-    .lux-note{margin:10px 0 0;color:var(--muted);font-size:13px}
+    /* BODY */
+    .lux-body{padding:16px}
+    .lux-h2{
+      margin:18px 0 12px;
+      font-size:18px;
+      letter-spacing:.2px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .lux-note{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.35}
 
+    /* GRID responsive */
     .lux-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
     @media (max-width: 980px){ .lux-grid{grid-template-columns:repeat(2,1fr)} }
     @media (max-width: 680px){ .lux-grid{grid-template-columns:1fr} }
@@ -108,7 +180,7 @@
       box-shadow: 0 14px 50px rgba(0,0,0,.35);
     }
 
-    /* “Imagen” placeholder (sin fotos) */
+    /* Placeholder elegante (sin imágenes) */
     .lux-img{
       height:58px;
       border-bottom:1px solid var(--line);
@@ -121,7 +193,18 @@
     .lux-content{padding:12px 12px 14px}
     .lux-name{margin:0 0 6px;font-weight:950;letter-spacing:.2px}
     .lux-meta{margin:0;color:var(--muted);font-size:13px;line-height:1.35}
-    .lux-tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+    .lux-spec{
+      margin:10px 0 0;
+      padding:10px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.20);
+      color:rgba(255,255,255,.90);
+      font-size:12.5px;
+      line-height:1.35;
+    }
+    .lux-spec b{color:#fff}
+    .lux-tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 0}
     .lux-tag{
       font-size:12px;
       padding:6px 8px;
@@ -137,10 +220,11 @@
       background:linear-gradient(90deg,var(--gold1),var(--gold2));
       -webkit-background-clip:text;
       color:transparent;
+      font-size:16px;
     }
     .lux-row{display:flex;gap:10px;flex-wrap:wrap}
     .lux-mini{
-      padding:11px 12px;border-radius:12px;
+      padding:11px 12px;border-radius:14px;
       border:1px solid var(--line);
       background:rgba(255,255,255,.03);
       font-weight:900;font-size:13px;
@@ -161,10 +245,11 @@
     }
     .lux-small{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
 
+    /* WhatsApp flotante */
     .lux-wa-float{
       position:fixed;
-      right:16px;
-      bottom:16px;
+      right:14px;
+      bottom:14px;
       z-index:9999;
       display:inline-flex;
       align-items:center;
@@ -230,6 +315,16 @@
         </div>
       </div>
 
+      <!-- Barra sticky (móvil friendly) -->
+      <div class="lux-sticky">
+        <div class="lux-sticky-inner">
+          <div class="lux-search">
+            <input id="q" class="lux-input" placeholder="Buscar (ej: sauvage, lattafa, 100ml, noche)"/>
+          </div>
+          <div class="lux-pill" id="count">0 perfumes</div>
+        </div>
+      </div>
+
       <div class="lux-body" id="catalog"></div>
 
     </div>
@@ -245,25 +340,25 @@
       return https://wa.me/${PHONE}?text=${encodeURIComponent(text)};
     }
 
-    // ✅ Edita precios/stock cuando quieras
+    // ✅ Catálogo (por secciones) con ESPECIFICACIONES
     const sections = [
       {
         id:"mas-vendidos",
         title:"🔥 Más vendidos",
         note:"¿No ves el perfume que buscas? Mándame WhatsApp y te confirmo disponibilidad y entrega.",
         items:[
-          {name:"Dior Sauvage EDP", ml:"100 ml", type:"EDP", use:"Diario / Noche", vibe:["🌿 Fresco","🧴 Limpio","🌙 Noche"], price:3200},
-          {name:"Acqua Di Gio Parfum", ml:"125 ml", type:"Parfum", use:"Oficina / Diario", vibe:["🌊 Acuático","🕴️ Formal","☀️ Diario"], price:2900},
-          {name:"Azzaro The Most Wanted", ml:"100 ml", type:"Parfum", use:"Noche / Fiesta", vibe:["🔥 Dulce","🌙 Noche","🥂 Fiesta"], price:2600},
-          {name:"Versace Eros", ml:"100 ml", type:"EDP", use:"Fiesta / Noche", vibe:["🍬 Dulce","🌙 Noche","🥂 Fiesta"], price:1800},
-          {name:"Invictus", ml:"100 ml", type:"EDT", use:"Diario / Gym", vibe:["🏆 Deportivo","☀️ Diario","🧼 Limpio"], price:1700},
-          {name:"Montblanc Explorer", ml:"100 ml", type:"EDP", use:"Diario / Oficina", vibe:["🧭 Versátil","🕴️ Formal","☀️ Diario"], price:1100},
-          {name:"Nautica Voyage", ml:"100 ml", type:"EDT", use:"Diario / Calor", vibe:["🌊 Fresco","☀️ Diario","💸 Barato"], price:450},
-          {name:"Hawas for Him", ml:"100 ml", type:"EDP", use:"Noche / Verano", vibe:["🌊 Acuático","🌙 Noche","🔥 Proyección"], price:1100},
-          {name:"Jean Paul Gaultier Le Male", ml:"125 ml", type:"EDT", use:"Noche / Citas", vibe:["🍯 Dulce","🌙 Noche","🧥 Frío"], price:2200},
-          {name:"YSL Y", ml:"100 ml", type:"EDP", use:"Diario / Oficina", vibe:["🧼 Limpio","🕴️ Formal","☀️ Diario"], price:2600},
-          {name:"Bleu de Chanel", ml:"100 ml", type:"EDP", use:"Oficina / Diario", vibe:["🧼 Limpio","🕴️ Formal","🧭 Versátil"], price:3300},
-          {name:"1 Million", ml:"100 ml", type:"EDT", use:"Fiesta / Noche", vibe:["🍬 Dulce","🥂 Fiesta","🌙 Noche"], price:2300},
+          {name:"Dior Sauvage", type:"EDP", ml:"100 ml", use:"Diario / Noche", notes:"Bergamota, pimienta, ambroxan", vibe:["🌿 Fresco","🧴 Limpio","🌙 Noche"], price:3200},
+          {name:"Acqua Di Gio", type:"Parfum", ml:"125 ml", use:"Oficina / Diario", notes:"Acuático, cítrico, maderas", vibe:["🌊 Acuático","🕴️ Formal","☀️ Diario"], price:2900},
+          {name:"Azzaro The Most Wanted", type:"Parfum", ml:"100 ml", use:"Noche / Fiesta", notes:"Dulce especiado, ámbar", vibe:["🔥 Dulce","🌙 Noche","🥂 Fiesta"], price:2600},
+          {name:"Versace Eros", type:"EDP", ml:"100 ml", use:"Fiesta / Noche", notes:"Vainilla, menta, tonka", vibe:["🍬 Dulce","🌙 Noche","🥂 Fiesta"], price:1800},
+          {name:"Invictus", type:"EDT", ml:"100 ml", use:"Diario / Gym", notes:"Marino, toronja, maderas", vibe:["🏆 Deportivo","☀️ Diario","🧼 Limpio"], price:1700},
+          {name:"Montblanc Explorer", type:"EDP", ml:"100 ml", use:"Diario / Oficina", notes:"Bergamota, vetiver, patchouli", vibe:["🧭 Versátil","🕴️ Formal","☀️ Diario"], price:1100},
+          {name:"Nautica Voyage", type:"EDT", ml:"100 ml", use:"Diario / Calor", notes:"Manzana, acuático, musk", vibe:["🌊 Fresco","☀️ Diario","💸 Barato"], price:450},
+          {name:"Rasasi Hawas", type:"EDP", ml:"100 ml", use:"Verano / Noche", notes:"Acuático frutal, ámbar", vibe:["🌊 Acuático","🔥 Proyección","🌙 Noche"], price:1100},
+          {name:"JPG Le Male", type:"EDT", ml:"125 ml", use:"Noche / Citas", notes:"Lavanda, vainilla, ámbar", vibe:["🍯 Dulce","🌙 Noche","🧥 Frío"], price:2200},
+          {name:"YSL Y", type:"EDP", ml:"100 ml", use:"Diario / Oficina", notes:"Manzana, salvia, maderas", vibe:["🧼 Limpio","🕴️ Formal","☀️ Diario"], price:2600},
+          {name:"Bleu de Chanel", type:"EDP", ml:"100 ml", use:"Oficina / Diario", notes:"Cítrico, incienso, maderas", vibe:["🧼 Limpio","🕴️ Formal","🧭 Versátil"], price:3300},
+          {name:"1 Million", type:"EDT", ml:"100 ml", use:"Fiesta / Noche", notes:"Canela, cuero, ámbar", vibe:["🍬 Dulce","🥂 Fiesta","🌙 Noche"], price:2300},
         ]
       },
 
@@ -272,18 +367,18 @@
         title:"🕴️ Diseñador",
         note:"Diseñador: versátiles, elegantes y fáciles de vender.",
         items:[
-          {name:"Armani Code", ml:"125 ml", type:"EDP", use:"Noche / Formal", vibe:["🕴️ Formal","🌙 Noche","🧥 Frío"], price:2900},
-          {name:"Prada Luna Rossa Carbon", ml:"100 ml", type:"EDT", use:"Diario / Oficina", vibe:["🧼 Limpio","🧭 Versátil","☀️ Diario"], price:2600},
-          {name:"Valentino Uomo Born in Roma", ml:"100 ml", type:"EDT", use:"Diario / Noche", vibe:["🧭 Versátil","🌙 Noche","🍃 Fresco"], price:2800},
-          {name:"Givenchy Gentleman", ml:"100 ml", type:"EDP", use:"Noche / Elegante", vibe:["🕴️ Formal","🌙 Noche","🧥 Frío"], price:2700},
-          {name:"Dolce & Gabbana The One", ml:"100 ml", type:"EDP", use:"Citas / Noche", vibe:["🌙 Noche","🧥 Frío","😎 Sexy"], price:2400},
-          {name:"Versace Dylan Blue", ml:"100 ml", type:"EDT", use:"Diario / Oficina", vibe:["🧼 Limpio","☀️ Diario","🧭 Versátil"], price:1700},
-          {name:"Coach for Men", ml:"100 ml", type:"EDT", use:"Diario", vibe:["☀️ Diario","🧭 Versátil","🍃 Fresco"], price:1400},
-          {name:"Hugo Boss Bottled", ml:"100 ml", type:"EDT", use:"Oficina", vibe:["🕴️ Formal","☀️ Diario","🧭 Versátil"], price:1600},
-          {name:"Paco Rabanne Phantom", ml:"100 ml", type:"EDT", use:"Diario / Noche", vibe:["🤖 Moderno","🍬 Dulce","🌙 Noche"], price:2500},
-          {name:"Carolina Herrera Bad Boy", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🌙 Noche","🔥 Intenso","😎 Sexy"], price:2600},
-          {name:"Dior Homme", ml:"100 ml", type:"EDT", use:"Elegante", vibe:["🕴️ Formal","🧼 Limpio","🧭 Versátil"], price:3100},
-          {name:"Bvlgari Man in Black", ml:"100 ml", type:"EDP", use:"Noche / Frío", vibe:["🧥 Frío","🌙 Noche","🔥 Intenso"], price:2700},
+          {name:"Armani Code", type:"EDP", ml:"125 ml", use:"Noche / Formal", notes:"Iris, tonka, cuero suave", vibe:["🕴️ Formal","🌙 Noche","🧥 Frío"], price:2900},
+          {name:"Prada Luna Rossa Carbon", type:"EDT", ml:"100 ml", use:"Diario / Oficina", notes:"Lavanda, metal, ambroxan", vibe:["🧼 Limpio","🧭 Versátil","☀️ Diario"], price:2600},
+          {name:"Valentino Born in Roma", type:"EDT", ml:"100 ml", use:"Diario / Noche", notes:"Mineral, violeta, maderas", vibe:["🧭 Versátil","🌙 Noche","🍃 Fresco"], price:2800},
+          {name:"Givenchy Gentleman", type:"EDP", ml:"100 ml", use:"Noche / Elegante", notes:"Iris, pimienta, vainilla", vibe:["🕴️ Formal","🌙 Noche","🧥 Frío"], price:2700},
+          {name:"D&G The One", type:"EDP", ml:"100 ml", use:"Citas / Noche", notes:"Tabaco, ámbar, especias", vibe:["🌙 Noche","😎 Sexy","🧥 Frío"], price:2400},
+          {name:"Versace Dylan Blue", type:"EDT", ml:"100 ml", use:"Diario / Oficina", notes:"Aromático, incienso, almizcle", vibe:["🧼 Limpio","☀️ Diario","🧭 Versátil"], price:1700},
+          {name:"Hugo Boss Bottled", type:"EDT", ml:"100 ml", use:"Oficina", notes:"Manzana, canela, maderas", vibe:["🕴️ Formal","☀️ Diario","🧭 Versátil"], price:1600},
+          {name:"Paco Rabanne Phantom", type:"EDT", ml:"100 ml", use:"Diario / Noche", notes:"Lavanda, limón, vainilla", vibe:["🤖 Moderno","🍬 Dulce","🌙 Noche"], price:2500},
+          {name:"CH Bad Boy", type:"EDP", ml:"100 ml", use:"Noche", notes:"Pimienta, cacao, ámbar", vibe:["🌙 Noche","🔥 Intenso","😎 Sexy"], price:2600},
+          {name:"Dior Homme", type:"EDT", ml:"100 ml", use:"Elegante", notes:"Cítrico, iris suave, maderas", vibe:["🕴️ Formal","🧼 Limpio","🧭 Versátil"], price:3100},
+          {name:"Bvlgari Man in Black", type:"EDP", ml:"100 ml", use:"Noche / Frío", notes:"Ron, cuero, especias", vibe:["🧥 Frío","🌙 Noche","🔥 Intenso"], price:2700},
+          {name:"Burberry Hero", type:"EDT", ml:"100 ml", use:"Diario", notes:"Bergamota, cedro, ámbar", vibe:["🧭 Versátil","☀️ Diario","🍃 Fresco"], price:2400},
         ]
       },
 
@@ -292,38 +387,38 @@
         title:"🌙 Árabes",
         note:"Árabes: mucha proyección y buen precio (se venden rápido).",
         items:[
-          {name:"Lattafa Asad", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🔥 Intenso","🌙 Noche","💸 Best"], price:650},
-          {name:"Afnan 9PM", ml:"100 ml", type:"EDP", use:"Fiesta / Noche", vibe:["🍬 Dulce","🥂 Fiesta","🌙 Noche"], price:750},
-          {name:"Armaf Club de Nuit Intense Man", ml:"105 ml", type:"EDT", use:"Diario / Noche", vibe:["🧼 Limpio","🌙 Noche","🔥 Proyección"], price:950},
-          {name:"Rasasi Hawas", ml:"100 ml", type:"EDP", use:"Verano / Noche", vibe:["🌊 Acuático","🔥 Proyección","🌙 Noche"], price:1100},
-          {name:"Lattafa Fakhar Black", ml:"100 ml", type:"EDP", use:"Diario", vibe:["🧼 Limpio","☀️ Diario","🧭 Versátil"], price:700},
-          {name:"Lattafa Khamrah", ml:"100 ml", type:"EDP", use:"Frío / Noche", vibe:["🍯 Dulce","🧥 Frío","🌙 Noche"], price:950},
-          {name:"Afnan Turathi Blue", ml:"90 ml", type:"EDP", use:"Diario", vibe:["🍃 Fresco","☀️ Diario","🧭 Versátil"], price:1050},
-          {name:"Maison Alhambra Salvo Intense", ml:"100 ml", type:"EDP", use:"Diario", vibe:["🧼 Limpio","☀️ Diario","💸 Best"], price:650},
-          {name:"Al Haramain Detour Noir", ml:"100 ml", type:"EDP", use:"Noche / Frío", vibe:["🧥 Frío","🌙 Noche","😎 Sexy"], price:950},
-          {name:"Armaf Iconic", ml:"105 ml", type:"EDP", use:"Diario", vibe:["🧼 Limpio","🕴️ Formal","🧭 Versátil"], price:1200},
-          {name:"Bharara King", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🔥 Intenso","🌙 Noche","👑 Premium"], price:1400},
-          {name:"Afnan Supremacy NOI", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🔥 Intenso","🌙 Noche","👑 Premium"], price:1550},
+          {name:"Lattafa Asad", type:"EDP", ml:"100 ml", use:"Noche", notes:"Especias, ámbar, maderas", vibe:["🔥 Intenso","🌙 Noche","💸 Best"], price:650},
+          {name:"Afnan 9PM", type:"EDP", ml:"100 ml", use:"Fiesta / Noche", notes:"Dulce, frutal, vainilla", vibe:["🍬 Dulce","🥂 Fiesta","🌙 Noche"], price:750},
+          {name:"Armaf CDN Intense Man", type:"EDT", ml:"105 ml", use:"Diario / Noche", notes:"Cítrico, ahumado, maderas", vibe:["🧼 Limpio","🌙 Noche","🔥 Proyección"], price:950},
+          {name:"Lattafa Fakhar Black", type:"EDP", ml:"100 ml", use:"Diario", notes:"Fresco aromático, maderas", vibe:["🧼 Limpio","☀️ Diario","🧭 Versátil"], price:700},
+          {name:"Lattafa Khamrah", type:"EDP", ml:"100 ml", use:"Frío / Noche", notes:"Canela, vainilla, ámbar", vibe:["🍯 Dulce","🧥 Frío","🌙 Noche"], price:950},
+          {name:"Turathi Blue", type:"EDP", ml:"90 ml", use:"Diario", notes:"Cítrico, almizcle, ambarado", vibe:["🍃 Fresco","☀️ Diario","🧭 Versátil"], price:1050},
+          {name:"Detour Noir", type:"EDP", ml:"100 ml", use:"Noche / Frío", notes:"Vainilla, especias, maderas", vibe:["🧥 Frío","🌙 Noche","😎 Sexy"], price:950},
+          {name:"Oud for Glory", type:"EDP", ml:"100 ml", use:"Noche", notes:"Oud, resinas, ámbar", vibe:["🪵 Oud","🌙 Noche","🔥 Intenso"], price:1050},
+          {name:"Asad Zanzibar", type:"EDP", ml:"100 ml", use:"Diario / Noche", notes:"Fresco especiado, ambarado", vibe:["🍃 Fresco","🧭 Versátil","🌙 Noche"], price:750},
+          {name:"Kismet for Men", type:"EDP", ml:"100 ml", use:"Noche", notes:"Ámbar, especias, madera", vibe:["🌙 Noche","🔥 Intenso","🕴️ Formal"], price:900},
+          {name:"Armaf Iconic", type:"EDP", ml:"105 ml", use:"Diario", notes:"Fresco limpio, maderas", vibe:["🧼 Limpio","🕴️ Formal","🧭 Versátil"], price:1200},
+          {name:"Bharara King", type:"EDP", ml:"100 ml", use:"Noche", notes:"Dulce ambarado, proyección", vibe:["🔥 Intenso","🌙 Noche","👑 Premium"], price:1400},
         ]
       },
 
       {
         id:"noche",
-        title:"🌙 Noche y Fiesta",
+        title:"🌙 Noche / Fiesta",
         note:"Para antro, fiestas y citas.",
         items:[
-          {name:"Spicebomb Extreme", ml:"90 ml", type:"EDP", use:"Noche / Frío", vibe:["🧥 Frío","🌙 Noche","🔥 Intenso"], price:3200},
-          {name:"JPG Ultra Male", ml:"125 ml", type:"EDT", use:"Fiesta", vibe:["🥂 Fiesta","🍬 Dulce","🌙 Noche"], price:2700},
-          {name:"Stronger With You", ml:"100 ml", type:"EDT", use:"Citas / Noche", vibe:["😎 Sexy","🍯 Dulce","🌙 Noche"], price:2900},
-          {name:"The Most Wanted", ml:"100 ml", type:"EDP", use:"Fiesta", vibe:["🥂 Fiesta","🔥 Dulce","🌙 Noche"], price:2600},
-          {name:"1 Million Elixir", ml:"100 ml", type:"Parfum", use:"Fiesta", vibe:["🥂 Fiesta","🍬 Dulce","🔥 Intenso"], price:3100},
-          {name:"Eros Flame", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🌙 Noche","🔥 Intenso","😎 Sexy"], price:2200},
-          {name:"Bad Boy Cobalt", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🌙 Noche","🔥 Intenso","🥂 Fiesta"], price:2900},
-          {name:"Givenchy Reserve Privée", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🕴️ Formal","🌙 Noche","🧥 Frío"], price:3000},
-          {name:"Armani Code Parfum", ml:"125 ml", type:"Parfum", use:"Formal", vibe:["🕴️ Formal","🌙 Noche","😎 Sexy"], price:3200},
-          {name:"Sauvage Elixir", ml:"60 ml", type:"Elixir", use:"Noche", vibe:["🔥 Proyección","🌙 Noche","👑 Premium"], price:3800},
-          {name:"Oud for Glory", ml:"100 ml", type:"EDP", use:"Noche", vibe:["🪵 Oud","🌙 Noche","🔥 Intenso"], price:1050},
-          {name:"Khamrah Qahwa", ml:"100 ml", type:"EDP", use:"Frío", vibe:["☕ Café","🧥 Frío","🍯 Dulce"], price:1100},
+          {name:"Spicebomb Extreme", type:"EDP", ml:"90 ml", use:"Noche / Frío", notes:"Canela, tabaco, vainilla", vibe:["🧥 Frío","🌙 Noche","🔥 Intenso"], price:3200},
+          {name:"JPG Ultra Male", type:"EDT", ml:"125 ml", use:"Fiesta", notes:"Pera, vainilla, ámbar", vibe:["🥂 Fiesta","🍬 Dulce","🌙 Noche"], price:2700},
+          {name:"Stronger With You", type:"EDT", ml:"100 ml", use:"Citas / Noche", notes:"Castaña, vainilla, especias", vibe:["😎 Sexy","🍯 Dulce","🌙 Noche"], price:2900},
+          {name:"The Most Wanted", type:"EDP", ml:"100 ml", use:"Fiesta", notes:"Dulce especiado, ambarado", vibe:["🥂 Fiesta","🔥 Dulce","🌙 Noche"], price:2600},
+          {name:"1 Million Elixir", type:"Parfum", ml:"100 ml", use:"Fiesta", notes:"Vainilla, resinas, frutas", vibe:["🥂 Fiesta","🍬 Dulce","🔥 Intenso"], price:3100},
+          {name:"Eros Flame", type:"EDP", ml:"100 ml", use:"Noche", notes:"Cítrico, pimienta, vainilla", vibe:["🌙 Noche","🔥 Intenso","😎 Sexy"], price:2200},
+          {name:"Bad Boy Cobalt", type:"EDP", ml:"100 ml", use:"Noche", notes:"Aromático, mineral, maderas", vibe:["🌙 Noche","🔥 Intenso","🥂 Fiesta"], price:2900},
+          {name:"Sauvage Elixir", type:"Elixir", ml:"60 ml", use:"Noche", notes:"Especias, lavanda, maderas", vibe:["🔥 Proyección","🌙 Noche","👑 Premium"], price:3800},
+          {name:"Khamrah Qahwa", type:"EDP", ml:"100 ml", use:"Frío", notes:"Café, canela, vainilla", vibe:["☕ Café","🧥 Frío","🍯 Dulce"], price:1100},
+          {name:"Reserve Privée", type:"EDP", ml:"100 ml", use:"Noche", notes:"Whisky, iris, maderas", vibe:["🕴️ Formal","🌙 Noche","🧥 Frío"], price:3000},
+          {name:"Armani Code Parfum", type:"Parfum", ml:"125 ml", use:"Formal", notes:"Iris, tonka, ambarado", vibe:["🕴️ Formal","🌙 Noche","😎 Sexy"], price:3200},
+          {name:"Pure XS", type:"EDT", ml:"100 ml", use:"Fiesta", notes:"Dulce, especias, ámbar", vibe:["🍬 Dulce","🥂 Fiesta","🌙 Noche"], price:2400},
         ]
       },
 
@@ -332,32 +427,42 @@
         title:"💖 Dama",
         note:"Opciones que siempre se mueven bien.",
         items:[
-          {name:"Good Girl", ml:"80 ml", type:"EDP", use:"Noche", vibe:["🌙 Noche","😎 Sexy","🍯 Dulce"], price:3200},
-          {name:"La Vie Est Belle", ml:"100 ml", type:"EDP", use:"Diario / Noche", vibe:["🍬 Dulce","☀️ Diario","🌙 Noche"], price:2900},
-          {name:"Black Opium", ml:"90 ml", type:"EDP", use:"Noche", vibe:["☕ Café","🌙 Noche","🍬 Dulce"], price:3100},
-          {name:"Light Blue", ml:"100 ml", type:"EDT", use:"Diario", vibe:["🍋 Fresco","☀️ Diario","🌊 Verano"], price:2400},
-          {name:"Versace Bright Crystal", ml:"90 ml", type:"EDT", use:"Diario", vibe:["🌸 Floral","☀️ Diario","🧼 Limpio"], price:2200},
-          {name:"Cloud", ml:"100 ml", type:"EDP", use:"Diario", vibe:["🍬 Dulce","☁️ Suave","☀️ Diario"], price:1900},
-          {name:"Yara", ml:"100 ml", type:"EDP", use:"Diario", vibe:["🍓 Dulce","☀️ Diario","💸 Best"], price:700},
-          {name:"Yara Tous", ml:"100 ml", type:"EDP", use:"Diario", vibe:["🥭 Tropical","☀️ Diario","💸 Best"], price:750},
-          {name:"Scandal", ml:"80 ml", type:"EDP", use:"Fiesta", vibe:["🥂 Fiesta","🍯 Dulce","🌙 Noche"], price:2900},
-          {name:"Delina (inspiración)", ml:"100 ml", type:"EDP", use:"Elegante", vibe:["🌸 Floral","👑 Premium","🕴️ Formal"], price:1200},
-          {name:"My Way", ml:"90 ml", type:"EDP", use:"Diario", vibe:["🌸 Floral","☀️ Diario","🧼 Limpio"], price:3000},
-          {name:"Libre", ml:"90 ml", type:"EDP", use:"Diario / Noche", vibe:["🕴️ Elegante","🌙 Noche","☀️ Diario"], price:3200},
+          {name:"Good Girl", type:"EDP", ml:"80 ml", use:"Noche", notes:"Cacao, tonka, flores", vibe:["🌙 Noche","😎 Sexy","🍯 Dulce"], price:3200},
+          {name:"La Vie Est Belle", type:"EDP", ml:"100 ml", use:"Diario / Noche", notes:"Vainilla, praliné, iris", vibe:["🍬 Dulce","☀️ Diario","🌙 Noche"], price:2900},
+          {name:"Black Opium", type:"EDP", ml:"90 ml", use:"Noche", notes:"Café, vainilla, flores", vibe:["☕ Café","🌙 Noche","🍬 Dulce"], price:3100},
+          {name:"Light Blue", type:"EDT", ml:"100 ml", use:"Diario", notes:"Limón, manzana, cedro", vibe:["🍋 Fresco","☀️ Diario","🌊 Verano"], price:2400},
+          {name:"Bright Crystal", type:"EDT", ml:"90 ml", use:"Diario", notes:"Floral, frutal, limpio", vibe:["🌸 Floral","☀️ Diario","🧼 Limpio"], price:2200},
+          {name:"Libre", type:"EDP", ml:"90 ml", use:"Diario / Noche", notes:"Lavanda, vainilla, ámbar", vibe:["🕴️ Elegante","🌙 Noche","☀️ Diario"], price:3200},
+          {name:"Cloud", type:"EDP", ml:"100 ml", use:"Diario", notes:"Dulce, crema, almizcle", vibe:["🍬 Dulce","☁️ Suave","☀️ Diario"], price:1900},
+          {name:"My Way", type:"EDP", ml:"90 ml", use:"Diario", notes:"Floral blanco, vainilla", vibe:["🌸 Floral","☀️ Diario","🧼 Limpio"], price:3000},
+          {name:"Scandal", type:"EDP", ml:"80 ml", use:"Fiesta", notes:"Miel, flores, caramelo", vibe:["🥂 Fiesta","🍯 Dulce","🌙 Noche"], price:2900},
+          {name:"Yara", type:"EDP", ml:"100 ml", use:"Diario", notes:"Dulce cremoso, tropical", vibe:["🍓 Dulce","☀️ Diario","💸 Best"], price:700},
+          {name:"Yara Tous", type:"EDP", ml:"100 ml", use:"Diario", notes:"Tropical frutal, vainilla", vibe:["🥭 Tropical","☀️ Diario","💸 Best"], price:750},
+          {name:"Miss Dior", type:"EDP", ml:"100 ml", use:"Elegante", notes:"Rosas, cítricos, maderas", vibe:["🌸 Floral","🕴️ Formal","👑 Premium"], price:3500},
         ]
       },
     ];
 
     function cardHTML(p){
       const msg = Hola quiero ${p.name} ${p.type} ${p.ml} en ${mxn(p.price)}. ¿Hay disponibilidad?;
+      const tags = (p.vibe || []).map(t=><span class="lux-tag">${t}</span>).join("");
       return `
         <div class="lux-card">
           <div class="lux-img"></div>
           <div class="lux-content">
             <p class="lux-name">${p.name}</p>
             <p class="lux-meta">${p.ml} • ${p.type} • ${p.use}</p>
-            <div class="lux-tags">${p.vibe.map(t=><span class="lux-tag">${t}</span>).join("")}</div>
+
+            <div class="lux-spec">
+              <b>Especificaciones:</b><br>
+              <b>Notas/Estilo:</b> ${p.notes}<br>
+              <b>Uso:</b> ${p.use}
+            </div>
+
+            ${tags ? <div class="lux-tags">${tags}</div> : ``}
+
             <div class="lux-price">${mxn(p.price)}</div>
+
             <div class="lux-row">
               <a class="lux-mini gold" target="_blank" rel="noopener" href="${wa(msg)}">Pedir</a>
             </div>
@@ -366,23 +471,71 @@
       `;
     }
 
+    function sectionHTML(sec, q=""){
+      const query = q.trim().toLowerCase();
+      let items = sec.items;
+
+      if(query){
+        items = items.filter(p=>{
+          const blob = ${sec.title} ${p.name} ${p.type} ${p.ml} ${p.use} ${p.notes} ${(p.vibe||[]).join(" ")}.toLowerCase();
+          return blob.includes(query);
+        });
+      }
+
+      const count = items.length;
+      if(count === 0) return "";
+
+      return `
+        <section id="${sec.id}">
+          <h2 class="lux-h2">
+            <span>${sec.title}</span>
+            <span class="lux-pill">${count} productos</span>
+          </h2>
+
+          <div class="lux-grid">
+            ${items.map(cardHTML).join("")}
+          </div>
+
+          ${sec.note ? <p class="lux-note">${sec.note}</p> : ``}
+        </section>
+      `;
+    }
+
     const catalog = document.getElementById("catalog");
-    catalog.innerHTML = sections.map(sec => `
-      <section id="${sec.id}">
-        <h2 class="lux-h2">${sec.title}</h2>
-        <div class="lux-grid">
-          ${sec.items.map(cardHTML).join("")}
-        </div>
-        ${sec.note ? <p class="lux-note">${sec.note}</p> : ``}
-      </section>
-    `).join("") + `
-      <section id="como-comprar" style="margin-top:16px">
-        <h2 class="lux-h2">🛒 Cómo comprar</h2>
-        <div class="lux-info">
-          <p class="lux-small"><b>1)</b> Elige tu perfume → <b>2)</b> “Pedir” → <b>3)</b> Te confirmo disponibilidad, pago y entrega por WhatsApp.<br><b>WhatsApp:</b> +1 (956) 337-1082</p>
-        </div>
-      </section>
-    `;
+    const q = document.getElementById("q");
+    const count = document.getElementById("count");
+
+    function render(){
+      const query = q.value || "";
+      const html = sections.map(s=>sectionHTML(s, query)).join("");
+      catalog.innerHTML = html + `
+        <section id="como-comprar" style="margin-top:16px">
+          <h2 class="lux-h2">🛒 Cómo comprar</h2>
+          <div class="lux-info">
+            <p class="lux-small">
+              <b>1)</b> Elige tu perfume → <b>2)</b> “Pedir” → <b>3)</b> Te confirmo disponibilidad, pago y entrega por WhatsApp.<br>
+              <b>WhatsApp:</b> +1 (956) 337-1082
+            </p>
+          </div>
+        </section>
+      `;
+
+      // contador total mostrado (filtrado)
+      const total = sections.reduce((acc, sec)=>{
+        const query2 = query.trim().toLowerCase();
+        if(!query2) return acc + sec.items.length;
+        const c = sec.items.filter(p=>{
+          const blob = ${sec.title} ${p.name} ${p.type} ${p.ml} ${p.use} ${p.notes} ${(p.vibe||[]).join(" ")}.toLowerCase();
+          return blob.includes(query2);
+        }).length;
+        return acc + c;
+      }, 0);
+
+      count.textContent = ${total} perfumes;
+    }
+
+    q.addEventListener("input", render);
+    render();
   </script>
 </body>
 </html>
