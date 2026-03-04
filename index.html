@@ -24,45 +24,46 @@ font-size:34px;
 font-weight:bold;
 }
 
+.section{
+padding:20px;
+}
+
+.section-title{
+font-size:24px;
+margin-bottom:20px;
+border-bottom:2px solid #333;
+padding-bottom:10px;
+}
+
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
-padding:20px;
 }
 
 .card{
 background:#111;
 border-radius:12px;
 border:1px solid #333;
-padding:15px;
-text-align:center;
-}
-
-.card img{
-width:100%;
-height:200px;
-object-fit:contain;
-background:black;
+padding:20px;
 }
 
 .name{
 font-size:18px;
 font-weight:bold;
-margin-top:10px;
 }
 
 .specs{
 color:#aaa;
 font-size:14px;
-margin-top:5px;
+margin-top:6px;
 }
 
 .price{
 color:#ffd700;
 font-weight:bold;
 font-size:20px;
-margin:10px 0;
+margin:12px 0;
 }
 
 button{
@@ -83,8 +84,8 @@ background:#25D366;
 color:white;
 padding:15px;
 border-radius:50px;
-font-weight:bold;
 text-decoration:none;
+font-weight:bold;
 }
 
 </style>
@@ -95,7 +96,7 @@ text-decoration:none;
 
 <header>Perfume Essential</header>
 
-<div class="grid" id="catalog"></div>
+<div id="catalog"></div>
 
 <a class="whatsapp"
 href="https://wa.me/19563371082"
@@ -105,49 +106,61 @@ WhatsApp
 
 <script>
 
-const perfumes=[
+const sections=[
 
-{name:"Nautica Voyage",brand:"Nautica",type:"EDT",size:"100ml",price:339,img:"https://cdn.fragrancenet.com/images/photos/900x900/181557.jpg"},
+{
+title:"⭐ Más Vendidos",
+perfumes:[
 
-{name:"Versace Eros",brand:"Versace",type:"EDP",size:"100ml",price:1499,img:"https://cdn.fragrancenet.com/images/photos/900x900/256701.jpg"},
+{name:"Invictus",brand:"Paco Rabanne",type:"EDT",ml:"100ml",price:1699},
+{name:"Versace Eros",brand:"Versace",type:"EDP",ml:"100ml",price:1499},
+{name:"Nautica Voyage",brand:"Nautica",type:"EDT",ml:"100ml",price:339},
+{name:"Montblanc Explorer",brand:"Montblanc",type:"EDP",ml:"100ml",price:999}
 
-{name:"Invictus",brand:"Paco Rabanne",type:"EDT",size:"100ml",price:1699,img:"https://cdn.fragrancenet.com/images/photos/900x900/259520.jpg"},
+]
+},
 
-{name:"Acqua Di Gio",brand:"Armani",type:"EDT",size:"100ml",price:1899,img:"https://cdn.fragrancenet.com/images/photos/900x900/126742.jpg"},
+{
+title:"🧴 Perfumes Árabes",
+perfumes:[
 
-{name:"Montblanc Explorer",brand:"Montblanc",type:"EDP",size:"100ml",price:999,img:"https://cdn.fragrancenet.com/images/photos/900x900/349436.jpg"},
+{name:"Lattafa Asad",brand:"Lattafa",type:"EDP",ml:"100ml",price:599},
+{name:"Afnan 9PM",brand:"Afnan",type:"EDP",ml:"100ml",price:699},
+{name:"Hawas for Him",brand:"Rasasi",type:"EDP",ml:"100ml",price:899},
+{name:"Bharara King",brand:"Bharara",type:"EDP",ml:"100ml",price:1399}
 
-{name:"Afnan 9PM",brand:"Afnan",type:"EDP",size:"100ml",price:699,img:"https://cdn.fragrancenet.com/images/photos/900x900/431077.jpg"},
+]
+},
 
-{name:"Lattafa Asad",brand:"Lattafa",type:"EDP",size:"100ml",price:599,img:"https://cdn.fragrancenet.com/images/photos/900x900/456218.jpg"},
+{
+title:"👑 Diseñador",
+perfumes:[
 
-{name:"Bharara King",brand:"Bharara",type:"EDP",size:"100ml",price:1399,img:"https://cdn.fragrancenet.com/images/photos/900x900/455541.jpg"},
+{name:"Acqua Di Gio",brand:"Armani",type:"EDT",ml:"100ml",price:1899},
+{name:"Jean Paul Gaultier Le Male",brand:"Jean Paul Gaultier",type:"EDT",ml:"125ml",price:1899},
+{name:"Boss Bottled",brand:"Hugo Boss",type:"EDT",ml:"100ml",price:999},
+{name:"Dolce & Gabbana K",brand:"Dolce & Gabbana",type:"EDP",ml:"100ml",price:1499}
 
-{name:"Jean Paul Gaultier Le Male",brand:"Jean Paul Gaultier",type:"EDT",size:"125ml",price:1899,img:"https://cdn.fragrancenet.com/images/photos/900x900/124176.jpg"},
-
-{name:"Boss Bottled",brand:"Hugo Boss",type:"EDT",size:"100ml",price:999,img:"https://cdn.fragrancenet.com/images/photos/900x900/132889.jpg"},
-
-{name:"Hawas for Him",brand:"Rasasi",type:"EDP",size:"100ml",price:899,img:"https://cdn.fragrancenet.com/images/photos/900x900/355937.jpg"},
-
-{name:"Dolce & Gabbana K",brand:"Dolce & Gabbana",type:"EDP",size:"100ml",price:1499,img:"https://cdn.fragrancenet.com/images/photos/900x900/328061.jpg"}
+]
+}
 
 ]
 
-// duplicar para catálogo grande
-
-while(perfumes.length<80){
-perfumes.push(perfumes[Math.floor(Math.random()*perfumes.length)])
-}
-
 const catalog=document.getElementById("catalog")
 
-perfumes.forEach(p=>{
+sections.forEach(section=>{
 
 catalog.innerHTML+=`
 
-<div class="card">
+<div class="section">
 
-<img src="${p.img}">
+<div class="section-title">${section.title}</div>
+
+<div class="grid">
+
+${section.perfumes.map(p=>`
+
+<div class="card">
 
 <div class="name">${p.name}</div>
 
@@ -155,7 +168,7 @@ catalog.innerHTML+=`
 
 Marca: ${p.brand}<br>
 Tipo: ${p.type}<br>
-Tamaño: ${p.size}
+Tamaño: ${p.ml}
 
 </div>
 
@@ -166,6 +179,12 @@ Tamaño: ${p.size}
 Comprar
 
 </button>
+
+</div>
+
+`).join("")}
+
+</div>
 
 </div>
 
