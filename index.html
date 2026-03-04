@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 
 <meta charset="UTF-8">
@@ -14,11 +13,7 @@ body{
 margin:0;
 font-family:Arial;
 color:white;
-
-background:
-radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06), transparent 40%),
-radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05), transparent 40%),
-linear-gradient(135deg,#0b0b0b,#1a1a1a,#0f0f0f);
+background:#0b0b0b;
 }
 
 header{
@@ -119,48 +114,28 @@ font-weight:bold;
 
 <input id="search" placeholder="Buscar perfume">
 
-<select id="brandFilter">
+<select id="brand">
 <option value="">Todas las marcas</option>
-</select>
-
-<select id="sort">
-<option value="">Ordenar</option>
-<option value="low">Precio menor</option>
-<option value="high">Precio mayor</option>
 </select>
 
 </div>
 
 <div class="grid" id="catalog"></div>
 
-<a class="whatsapp"
-href="https://wa.me/19563371082"
-target="_blank">
+<a class="whatsapp" href="https://wa.me/19563371082" target="_blank">
 WhatsApp
 </a>
 
 <script>
 
-const phone="19563371082"
-
-function precio(base){
-
-if(base<500) return Math.round(base*1.40)
-if(base<1000) return Math.round(base*1.30)
-if(base<2000) return Math.round(base*1.20)
-
-return Math.round(base*1.15)
-
-}
-
-const perfumes=[
+const perfumes = [
 
 {
 name:"Nautica Voyage",
 brand:"Nautica",
 type:"EDT",
 size:"100ml",
-base:242,
+price:339,
 img:"https://cdn.fragrancenet.com/images/photos/900x900/181557.jpg"
 },
 
@@ -169,17 +144,8 @@ name:"Versace Eros",
 brand:"Versace",
 type:"EDP",
 size:"100ml",
-base:1054,
+price:1499,
 img:"https://cdn.fragrancenet.com/images/photos/900x900/256701.jpg"
-},
-
-{
-name:"Versace Dylan Blue",
-brand:"Versace",
-type:"EDT",
-size:"100ml",
-base:887,
-img:"https://cdn.fragrancenet.com/images/photos/900x900/314889.jpg"
 },
 
 {
@@ -187,7 +153,7 @@ name:"Invictus",
 brand:"Paco Rabanne",
 type:"EDT",
 size:"100ml",
-base:1388,
+price:1699,
 img:"https://cdn.fragrancenet.com/images/photos/900x900/259520.jpg"
 },
 
@@ -196,7 +162,7 @@ name:"Acqua Di Gio",
 brand:"Armani",
 type:"EDT",
 size:"100ml",
-base:1590,
+price:1899,
 img:"https://cdn.fragrancenet.com/images/photos/900x900/126742.jpg"
 },
 
@@ -205,54 +171,13 @@ name:"Montblanc Explorer",
 brand:"Montblanc",
 type:"EDP",
 size:"100ml",
-base:790,
+price:999,
 img:"https://cdn.fragrancenet.com/images/photos/900x900/349436.jpg"
-},
-
-{
-name:"Afnan 9PM",
-brand:"Afnan",
-type:"EDP",
-size:"100ml",
-base:525,
-img:"https://cdn.fragrancenet.com/images/photos/900x900/431077.jpg"
-},
-
-{
-name:"Lattafa Asad",
-brand:"Lattafa",
-type:"EDP",
-size:"100ml",
-base:479,
-img:"https://cdn.fragrancenet.com/images/photos/900x900/456218.jpg"
-},
-
-{
-name:"Bharara King",
-brand:"Bharara",
-type:"EDP",
-size:"100ml",
-base:1060,
-img:"https://cdn.fragrancenet.com/images/photos/900x900/455541.jpg"
-},
-
-{
-name:"Jean Paul Gaultier Le Male",
-brand:"Jean Paul Gaultier",
-type:"EDT",
-size:"125ml",
-base:1500,
-img:"https://cdn.fragrancenet.com/images/photos/900x900/124176.jpg"
 }
 
 ]
 
-// duplicar hasta tener catálogo grande
-while(perfumes.length<200){
-perfumes.push(perfumes[Math.floor(Math.random()*perfumes.length)])
-}
-
-const catalog=document.getElementById("catalog")
+const catalog = document.getElementById("catalog")
 
 function render(list){
 
@@ -260,9 +185,7 @@ catalog.innerHTML=""
 
 list.forEach(p=>{
 
-const sell=precio(p.base)
-
-catalog.innerHTML+=`
+catalog.innerHTML += `
 
 <div class="card">
 
@@ -280,12 +203,10 @@ Tamaño: ${p.size}
 
 </div>
 
-<div class="price">$${sell} MXN</div>
+<div class="price">$${p.price} MXN</div>
 
-<button onclick="window.open('https://wa.me/${phone}?text=Hola quiero ${p.name}')">
-
+<button onclick="window.open('https://wa.me/19563371082?text=Hola quiero ${p.name}')">
 Comprar
-
 </button>
 
 </div>
@@ -300,45 +221,36 @@ Comprar
 
 render(perfumes)
 
-const brands=[...new Set(perfumes.map(p=>p.brand))]
+const brandSelect = document.getElementById("brand")
 
-const brandFilter=document.getElementById("brandFilter")
+const brands = [...new Set(perfumes.map(p=>p.brand))]
 
 brands.forEach(b=>{
-brandFilter.innerHTML+=<option>${b}</option>
+brandSelect.innerHTML += <option value="${b}">${b}</option>
 })
 
-function update(){
+document.getElementById("search").addEventListener("input",filter)
 
-let list=[...perfumes]
+brandSelect.addEventListener("change",filter)
 
-const search=document.getElementById("search").value.toLowerCase()
-const brand=brandFilter.value
-const sort=document.getElementById("sort").value
+function filter(){
 
-if(search){
-list=list.filter(p=>p.name.toLowerCase().includes(search))
+let result = perfumes
+
+const text = document.getElementById("search").value.toLowerCase()
+const brand = brandSelect.value
+
+if(text){
+result = result.filter(p=>p.name.toLowerCase().includes(text))
 }
 
 if(brand){
-list=list.filter(p=>p.brand===brand)
+result = result.filter(p=>p.brand===brand)
 }
 
-if(sort==="low"){
-list.sort((a,b)=>precio(a.base)-precio(b.base))
-}
-
-if(sort==="high"){
-list.sort((a,b)=>precio(b.base)-precio(a.base))
-}
-
-render(list)
+render(result)
 
 }
-
-document.getElementById("search").addEventListener("input",update)
-brandFilter.addEventListener("change",update)
-document.getElementById("sort").addEventListener("change",update)
 
 </script>
 
