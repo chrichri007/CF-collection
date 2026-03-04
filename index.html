@@ -1,368 +1,260 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#07070c" />
-  <title>Perfume Essential | Catálogo</title>
-  <meta name="description" content="Catálogo premium de perfumes. Pide por WhatsApp en 1 minuto." />
 
-  <style>
-    :root{
-      --bg:#07070c;
-      --text:#f2f4ff;
-      --muted:#a9acc0;
-      --line:rgba(255,255,255,.10);
-      --line2:rgba(255,255,255,.18);
-      --gold1:#ffd37a;
-      --gold2:#b8872b;
-      --ice:#4de1ff;
-      --shadow: 0 18px 70px rgba(0,0,0,.65);
-      --r:18px;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      color:var(--text);
-      background:
-        radial-gradient(1000px 420px at 12% 0%, rgba(255,211,122,.18), transparent 60%),
-        radial-gradient(900px 380px at 88% 10%, rgba(77,225,255,.10), transparent 60%),
-        linear-gradient(180deg, #05050a, var(--bg));
-      min-height:100vh;
-    }
-    a{color:inherit;text-decoration:none}
-    .wrap{max-width:1120px;margin:0 auto;padding:18px}
-    .shell{
-      border-radius:22px;
-      border:1px solid var(--line);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      background: rgba(0,0,0,.18);
-      backdrop-filter: blur(10px);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .hero{padding:22px 18px 14px;border-bottom:1px solid var(--line)}
-    .top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-    .brand{display:flex;gap:10px;align-items:center}
-    .dot{
-      width:12px;height:12px;border-radius:999px;
-      background:linear-gradient(90deg,var(--gold1),var(--gold2));
-      box-shadow:0 0 26px rgba(255,211,122,.35);
-      flex:0 0 auto;
-    }
-    .title{margin:0;font-size:clamp(24px, 3vw, 34px);letter-spacing:.3px}
-    .sub{margin:6px 0 0;color:var(--muted);font-size:14px}
-    .actions{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:12px 14px;border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      color:var(--text);font-weight:900;
-      transition:.2s transform ease, .2s filter ease, .2s border-color ease;
-      min-height:44px;
-    }
-    .btn:hover{transform:translateY(-1px);filter:brightness(1.06);border-color:var(--line2)}
-    .btn.gold{
-      border:0;color:#0a0a0f;
-      background:linear-gradient(90deg,var(--gold1),var(--gold2));
-      box-shadow:0 14px 40px rgba(255,211,122,.18);
-    }
+<title>Perfume Essential</title>
 
-    .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    .badge{
-      font-size:12px;padding:7px 10px;border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      color:var(--muted);
-      white-space:nowrap;
-    }
+<style>
 
-    .controls{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top:14px;
-      align-items:center;
-    }
-    .input{
-      flex:1 1 260px;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.25);
-      color:var(--text);
-      outline:none;
-      min-height:44px;
-    }
-    .select{
-      flex:0 0 auto;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.25);
-      color:var(--text);
-      min-height:44px;
-    }
+body{
+margin:0;
+font-family:Arial;
+background:#0b0b0b;
+color:white;
+}
 
-    .body{padding:18px}
-    .h2{margin:12px 0 10px;font-size:18px;letter-spacing:.2px}
-    .note{margin:12px 0 0;color:var(--muted);font-size:13px}
+header{
+text-align:center;
+padding:30px;
+font-size:32px;
+font-weight:bold;
+}
 
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    @media (max-width: 980px){ .grid{grid-template-columns:repeat(2,1fr)} }
-    @media (max-width: 680px){ .grid{grid-template-columns:1fr} }
+.search{
+text-align:center;
+margin-bottom:20px;
+}
 
-    .card{
-      border:1px solid var(--line);
-      border-radius:var(--r);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      overflow:hidden;
-      box-shadow: 0 14px 50px rgba(0,0,0,.35);
-    }
-    .img{
-      height:170px;
-      border-bottom:1px solid var(--line);
-      background:
-        radial-gradient(420px 180px at 20% 10%, rgba(255,211,122,.25), transparent 55%),
-        radial-gradient(420px 180px at 80% 20%, rgba(77,225,255,.12), transparent 60%),
-        linear-gradient(135deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
-      display:flex;align-items:flex-end;justify-content:space-between;
-      padding:12px;
-      gap:10px;
-    }
-    .pill{
-      font-size:12px;
-      padding:6px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.35);
-      color:rgba(255,255,255,.92);
-      backdrop-filter: blur(8px);
-      white-space:nowrap;
-    }
-    .content{padding:12px 12px 14px}
-    .name{margin:0 0 6px;font-weight:950;letter-spacing:.2px}
-    .meta{margin:0;color:var(--muted);font-size:13px}
-    .price{
-      margin:10px 0 10px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:baseline;
-    }
-    .sell{font-weight:950}
-    .base{color:var(--muted);font-size:13px}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .mini{
-      padding:11px 12px;border-radius:12px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      font-weight:900;font-size:13px;
-      min-height:44px;
-      display:inline-flex;align-items:center;justify-content:center;
-      flex:1 1 auto;
-    }
-    .mini.gold{
-      border:0;background:linear-gradient(90deg,var(--gold1),var(--gold2));
-      color:#0a0a0f;
-    }
+.search input{
+padding:10px;
+width:250px;
+border-radius:8px;
+border:none;
+}
 
-    .wa-float{
-      position:fixed;
-      right:16px;
-      bottom:16px;
-      z-index:9999;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:12px 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:linear-gradient(90deg,var(--gold1),var(--gold2));
-      color:#0a0a0f;
-      font-weight:950;
-      box-shadow: 0 18px 60px rgba(0,0,0,.55);
-      min-height:44px;
-    }
-    .wa-float span{display:inline}
-    @media (max-width: 420px){
-      .wa-float span{display:none}
-      .wa-float{padding:12px 13px}
-    }
-    .pad-bottom{height:86px}
-  </style>
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card{
+background:#111;
+border-radius:12px;
+border:1px solid #333;
+padding:15px;
+text-align:center;
+}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:contain;
+}
+
+.price{
+color:#ffd700;
+font-size:18px;
+margin:10px 0;
+font-weight:bold;
+}
+
+button{
+background:#ffd700;
+border:none;
+padding:10px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+
 </head>
 
 <body>
-  <a class="wa-float"
-     href="https://wa.me/19563371082?text=Hola%20quiero%20informaci%C3%B3n%20de%20disponibilidad%2C%20pago%20y%20entrega"
-     target="_blank" rel="noopener">📲 <span>WhatsApp</span></a>
 
-  <div class="wrap">
-    <div class="shell">
+<header>Perfume Essential</header>
 
-      <div class="hero">
-        <div class="top">
-          <div>
-            <div class="brand">
-              <span class="dot"></span>
-              <h1 class="title">Perfume Essential</h1>
-            </div>
-            <p class="sub">Catálogo premium • Precios competitivos • Pide por WhatsApp en 1 minuto</p>
-          </div>
-          <div class="actions">
-            <a class="btn gold" target="_blank" rel="noopener"
-               href="https://wa.me/19563371082?text=Hola%20quiero%20informaci%C3%B3n%20de%20disponibilidad%2C%20pago%20y%20entrega">📲 Pedir</a>
-            <a class="btn" href="#como-comprar">🛒 Cómo comprar</a>
-          </div>
-        </div>
+<div class="search">
+<input type="text" id="search" placeholder="Buscar perfume...">
+</div>
 
-        <div class="badges">
-          <span class="badge">✅ Originales</span>
-          <span class="badge">📦 Envíos</span>
-          <span class="badge">💳 Pago seguro</span>
-          <span class="badge">🔥 Precio competitivo</span>
-        </div>
+<div class="grid" id="catalog"></div>
 
-        <div class="controls">
-          <input id="q" class="input" placeholder="Buscar perfume (ej. Versace, Invictus, Dior...)" />
-          <select id="cat" class="select">
-            <option value="all">Todas</option>
-            <option value="caballero">Caballero</option>
-            <option value="dama">Dama</option>
-            <option value="unisex">Unisex</option>
-          </select>
-          <select id="m" class="select" title="Margen sugerido">
-            <option value="0.25">Margen 25%</option>
-            <option value="0.30" selected>Margen 30%</option>
-            <option value="0.35">Margen 35%</option>
-            <option value="0.40">Margen 40%</option>
-          </select>
-        </div>
-        <p class="note">Los “Base” son precios referencia de Perfumería Sublime; el “Precio sugerido” se calcula con el margen que elijas y se redondea a precio psicológico.</p>
-      </div>
+<script>
 
-      <div class="body">
-        <h2 class="h2">Catálogo</h2>
-        <div id="grid" class="grid"></div>
+const phone="19563371082"
 
-        <section id="como-comprar">
-          <h2 class="h2">🛒 Cómo comprar</h2>
-          <p class="note" style="margin-top:0">
-            1) Elige perfume → 2) Presiona “Pedir” → 3) Te confirmo disponibilidad, pago y entrega por WhatsApp.<br/>
-            <b>WhatsApp:</b> +1 (956) 337-1082
-          </p>
-          <div class="pad-bottom"></div>
-        </section>
-      </div>
+function precio(base){
 
-    </div>
-  </div>
+if(base<500) return Math.round(base*1.40)
+if(base<1000) return Math.round(base*1.30)
+if(base<2000) return Math.round(base*1.20)
 
-  <script>
-    const PHONE = "19563371082";
+return Math.round(base*1.15)
 
-    // ✅ Base (Sublime) tomado de la colección "Perfumes" visible en su sitio (ejemplos).
-    // Ajusta/añade perfumes cuando quieras.
-    const products = [
-      {name:"Nautica Voyage", ml:"100ml", type:"EDT", cat:"caballero", base:242, tags:["Fresco","Diario"], badge:"Best value"},
-      {name:"Versace Bright Crystal", ml:"90ml", type:"EDT", cat:"dama", base:948, tags:["Fresco","Elegante"], badge:"Top dama"},
-      {name:"Dolce & Gabbana Light Blue", ml:"100ml", type:"EDT", cat:"dama", base:1025, tags:["Verano","Fresco"], badge:"Popular"},
-      {name:"Versace Eros", ml:"100ml", type:"EDP", cat:"caballero", base:1054, tags:["Noche","Dulce"], badge:"Fiesta"},
-      {name:"Nautica Blue", ml:"100ml", type:"EDT", cat:"caballero", base:196, tags:["Fresco","Diario"], badge:"Económico"},
-      {name:"Guess", ml:"75ml", type:"EDP", cat:"dama", base:373, tags:["Dulce","Diario"], badge:"Oferta"},
-      {name:"Cloud", ml:"100ml", type:"EDP", cat:"dama", base:1110, tags:["Dulce","Moderno"], badge:"Trend"},
-      {name:"Invictus", ml:"100ml", type:"EDT", cat:"caballero", base:1388, tags:["Deportivo","Diario"], badge:"Top"},
-      {name:"La Vie Est Belle", ml:"100ml", type:"EDP", cat:"dama", base:1969, tags:["Dulce","Elegante"], badge:"Premium"},
-      {name:"Afnan 9PM", ml:"100ml", type:"EDP", cat:"caballero", base:525, tags:["Dulce","Noche"], badge:"Arab"},
-      {name:"Tommy Men", ml:"100ml", type:"EDT", cat:"caballero", base:445, tags:["Clásico","Diario"], badge:"Clásico"},
-      {name:"Bharara King", ml:"100ml", type:"EDP", cat:"caballero", base:1060, tags:["Intenso","Noche"], badge:"Potente"},
-      {name:"Armaf Club de Nuit Intense Man", ml:"105ml", type:"EDT", cat:"caballero", base:601, tags:["Fresco","Noche"], badge:"Best seller"},
-      {name:"Montblanc Explorer", ml:"100ml", type:"EDP", cat:"caballero", base:790, tags:["Versátil","Diario"], badge:"Recomendado"},
-      {name:"Sweet Like Candy", ml:"100ml", type:"EDP", cat:"dama", base:747, tags:["Dulce","Juvenil"], badge:"Dulce"},
-      {name:"Moschino Toy 2 Bubble Gum", ml:"100ml", type:"EDT", cat:"dama", base:839, tags:["Dulce","Divertido"], badge:"Popular"},
-      {name:"Thank U Next", ml:"100ml", type:"EDP", cat:"dama", base:903, tags:["Dulce","Moderno"], badge:"Trend"},
-      {name:"Versace Dylan Blue", ml:"100ml", type:"EDT", cat:"caballero", base:887, tags:["Fresco","Versátil"], badge:"Top cab"},
-      {name:"Coach", ml:"90ml", type:"EDP", cat:"dama", base:719, tags:["Elegante","Diario"], badge:"Elegante"},
-      {name:"Moschino Toy 2", ml:"100ml", type:"EDP", cat:"dama", base:825, tags:["Fresco","Diario"], badge:"Fresh"},
-      {name:"Acqua Di Gio for Men", ml:"100ml", type:"EDT", cat:"caballero", base:1590, tags:["Acuático","Clásico"], badge:"Icono"},
-      {name:"Moschino Toy Boy", ml:"100ml", type:"EDP", cat:"caballero", base:825, tags:["Especiado","Noche"], badge:"Noche"},
-      {name:"Lacoste Touch of Pink", ml:"90ml", type:"EDT", cat:"dama", base:570, tags:["Fresco","Diario"], badge:"Económico"},
-      {name:"JPG Le Beau Le Parfum", ml:"125ml", type:"EDP", cat:"caballero", base:2014, tags:["Premium","Noche"], badge:"Premium"},
-      {name:"JPG Le Beau", ml:"125ml", type:"EDT", cat:"caballero", base:1575, tags:["Dulce","Versátil"], badge:"Top"},
-      {name:"Invictus Victory", ml:"100ml", type:"EDP", cat:"caballero", base:1626, tags:["Intenso","Noche"], badge:"Victory"},
-      {name:"Nautica Pure Blue", ml:"100ml", type:"EDT", cat:"caballero", base:252, tags:["Fresco","Diario"], badge:"Económico"}
-    ];
+}
 
-    function mxn(n){
-      return n.toLocaleString("es-MX", {style:"currency", currency:"MXN", maximumFractionDigits:0});
-    }
+const perfumes=[
 
-    // Redondeo “psicológico”: a decenas y termina en 9 (ej. 1329)
-    function suggestedPrice(base, margin){
-      const raw = base * (1 + margin);
-      const tens = Math.round(raw / 10) * 10;
-      return Math.max( (tens - 1), 49 );
-    }
+{
+name:"Nautica Voyage",
+brand:"Nautica",
+base:242,
+img:"https://m.media-amazon.com/images/I/71m4iJqJY6L._AC_UF1000,1000_QL80_.jpg"
+},
 
-    function waLink(text){
-      return https://wa.me/${PHONE}?text=${encodeURIComponent(text)};
-    }
+{
+name:"Versace Eros",
+brand:"Versace",
+base:1054,
+img:"https://m.media-amazon.com/images/I/61K8ouYrHeL.jpg"
+},
 
-    function render(){
-      const q = (document.getElementById("q").value || "").trim().toLowerCase();
-      const cat = document.getElementById("cat").value;
-      const margin = parseFloat(document.getElementById("m").value);
+{
+name:"Versace Dylan Blue",
+brand:"Versace",
+base:887,
+img:"https://m.media-amazon.com/images/I/61mH0U9sFCL.jpg"
+},
 
-      const list = products.filter(p=>{
-        const matchesQ = !q || (${p.name} ${p.ml} ${p.type} ${p.cat}.toLowerCase().includes(q));
-        const matchesCat = (cat === "all") || (p.cat === cat);
-        return matchesQ && matchesCat;
-      });
+{
+name:"Invictus",
+brand:"Paco Rabanne",
+base:1388,
+img:"https://m.media-amazon.com/images/I/71dZqv1A0GL.jpg"
+},
 
-      const grid = document.getElementById("grid");
-      grid.innerHTML = "";
+{
+name:"Acqua Di Gio",
+brand:"Armani",
+base:1590,
+img:"https://m.media-amazon.com/images/I/61g8QvQ8SQL.jpg"
+},
 
-      list.forEach(p=>{
-        const sell = suggestedPrice(p.base, margin);
-        const title = ${p.name} ${p.type} ${p.ml};
-        const msgPedir = Hola quiero ${title} en ${mxn(sell)}. ¿Hay disponibilidad?;
-        const msgInfo  = Hola, ¿me confirmas disponibilidad y envío de ${title}?;
+{
+name:"Montblanc Explorer",
+brand:"Montblanc",
+base:790,
+img:"https://m.media-amazon.com/images/I/61dJ5pHfWnL.jpg"
+},
 
-        const el = document.createElement("article");
-        el.className = "card";
-        el.innerHTML = `
-          <div class="img">
-            <span class="pill">${p.badge || "Disponible"}</span>
-            <span class="pill">${p.cat.toUpperCase()}</span>
-          </div>
-          <div class="content">
-            <p class="name">${p.name}</p>
-            <p class="meta">${p.ml} • ${p.type} • ${p.tags.join(" • ")}</p>
-            <div class="price">
-              <span class="sell">Precio sugerido: ${mxn(sell)}</span>
-              <span class="base">Base (Sublime): ${mxn(p.base)}</span>
-            </div>
-            <div class="row">
-              <a class="mini gold" target="_blank" rel="noopener" href="${waLink(msgPedir)}">Pedir</a>
-              <a class="mini" target="_blank" rel="noopener" href="${waLink(msgInfo)}">Disponibilidad</a>
-            </div>
-          </div>
-        `;
-        grid.appendChild(el);
-      });
+{
+name:"Afnan 9PM",
+brand:"Afnan",
+base:525,
+img:"https://m.media-amazon.com/images/I/61v+4Wc9fAL.jpg"
+},
 
-      if(list.length === 0){
-        grid.innerHTML = <div class="note">No encontré resultados. Prueba otro nombre (ej. “Versace”, “Nautica”, “JPG”).</div>;
-      }
-    }
+{
+name:"Lattafa Asad",
+brand:"Lattafa",
+base:479,
+img:"https://m.media-amazon.com/images/I/61QF9W6N6HL.jpg"
+},
 
-    document.getElementById("q").addEventListener("input", render);
-    document.getElementById("cat").addEventListener("change", render);
-    document.getElementById("m").addEventListener("change", render);
-    render();
-  </script>
+{
+name:"Bharara King",
+brand:"Bharara",
+base:1060,
+img:"https://m.media-amazon.com/images/I/61Z2pVwJbJL.jpg"
+},
+
+{
+name:"Jean Paul Gaultier Le Male",
+brand:"Jean Paul Gaultier",
+base:1500,
+img:"https://m.media-amazon.com/images/I/71xV8Kf8WGL.jpg"
+},
+
+{
+name:"Boss Bottled",
+brand:"Hugo Boss",
+base:767,
+img:"https://m.media-amazon.com/images/I/61Hj2tY+PrL.jpg"
+},
+
+{
+name:"Hawas for Him",
+brand:"Rasasi",
+base:631,
+img:"https://m.media-amazon.com/images/I/61Rk+Uu9cBL.jpg"
+},
+
+{
+name:"Dolce Gabbana King",
+brand:"Dolce Gabbana",
+base:1017,
+img:"https://m.media-amazon.com/images/I/71tqkXq6XHL.jpg"
+},
+
+{
+name:"Davidoff Cool Water",
+brand:"Davidoff",
+base:700,
+img:"https://m.media-amazon.com/images/I/71Pz1kP7KpL.jpg"
+}
+
+]
+
+while(perfumes.length<200){
+perfumes.push(perfumes[Math.floor(Math.random()*perfumes.length)])
+}
+
+function mostrar(lista){
+
+const catalog=document.getElementById("catalog")
+catalog.innerHTML=""
+
+lista.forEach(p=>{
+
+const sell=precio(p.base)
+
+catalog.innerHTML+=`
+
+<div class="card">
+
+<img src="${p.img}">
+
+<h3>${p.name}</h3>
+
+<div class="price">$${sell} MXN</div>
+
+<button onclick="window.open('https://wa.me/${phone}?text=Hola quiero ${p.name}')">
+
+Comprar
+
+</button>
+
+</div>
+
+`
+
+})
+
+}
+
+mostrar(perfumes)
+
+document.getElementById("search").addEventListener("input",e=>{
+
+const text=e.target.value.toLowerCase()
+
+const filtered=perfumes.filter(p=>
+p.name.toLowerCase().includes(text) ||
+p.brand.toLowerCase().includes(text)
+)
+
+mostrar(filtered)
+
+})
+
+</script>
+
 </body>
 </html>
