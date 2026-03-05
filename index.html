@@ -83,7 +83,79 @@ text-decoration:none;
 opacity:0.9;
 }
 
-</style>
+</style>/* =========================
+   MOBILE TUNING (Instagram / iPhone)
+   Pégalo al final del <style>
+========================= */
+
+@media (max-width: 520px){
+
+  .lux-wrap{ padding:10px; }
+  .lux-hero{ padding:14px 12px 10px; }
+
+  /* header más compacto */
+  .lux-title{ font-size:24px; }
+  .lux-sub{ font-size:12.5px; margin-top:4px; }
+
+  /* botones grandes pero sin romper */
+  .lux-actions{ width:100%; gap:8px; }
+  .lux-btn{ flex:1 1 auto; padding:12px 12px; border-radius:14px; }
+
+  /* badges más chiquitos */
+  .lux-badge{ font-size:11px; padding:6px 9px; }
+
+  /* chips en una fila con scroll suave */
+  .lux-nav{
+    gap:8px;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:2px;
+  }
+  .lux-chip{ padding:10px 12px; font-size:12.5px; }
+
+  /* sticky search compacto */
+  .lux-sticky{ padding:10px 12px; }
+  .lux-input{ padding:12px 12px; border-radius:14px; }
+  .lux-pill{ padding:10px 12px; font-size:12px; }
+
+  /* AQUÍ está el cambio clave: 2 columnas en celular */
+  .lux-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+    gap:10px;
+  }
+
+  /* tarjetas */
+  .lux-card{ border-radius:16px; }
+  .lux-img{ height:52px; }
+
+  .lux-content{ padding:10px 10px 12px; }
+  .lux-name{ font-size:13.5px; margin-bottom:5px; }
+  .lux-meta{ font-size:11.5px; line-height:1.25; }
+
+  /* tags que no se desborden */
+  .lux-tags{ gap:6px; }
+  .lux-tag{ font-size:11px; padding:5px 7px; }
+
+  /* precio más compacto */
+  .lux-price{ font-size:13.5px; margin:8px 0 8px; }
+
+  /* botones de pedir */
+  .lux-mini{
+    min-height:40px;
+    padding:10px 10px;
+    border-radius:12px;
+    font-size:12.5px;
+  }
+
+  /* flotante WhatsApp más discreto */
+  .lux-wa-float{ right:12px; bottom:12px; padding:12px 12px; }
+}
+
+/* Extra: en pantallas MUY chicas, regresa a 1 columna */
+@media (max-width: 360px){
+  .lux-grid{ grid-template-columns:1fr !important; }
+}
 </head>
 
 <body>
