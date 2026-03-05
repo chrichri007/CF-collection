@@ -233,11 +233,20 @@
       .lux-grid{grid-template-columns:1fr !important}
       .lux-wa-float span{display:none}
     }
+
+    /* Mensaje si algo falla */
+    .lux-error{
+      border:1px solid rgba(255,90,90,.35);
+      background:rgba(255,90,90,.08);
+      border-radius:18px;
+      padding:14px;
+      color:#ffdede;
+      margin-top:14px;
+    }
   </style>
 </head>
 
 <body>
-  <!-- WhatsApp flotante -->
   <a class="lux-wa-float"
      href="https://wa.me/19563371082?text=Hola%20quiero%20informaci%C3%B3n%20de%20disponibilidad%2C%20pago%20y%20entrega"
      target="_blank" rel="noopener">📲 <span>WhatsApp</span></a>
@@ -280,7 +289,9 @@
         </div>
       </div>
 
-      <div class="lux-body" id="catalog"></div>
+      <div class="lux-body" id="catalog">
+        <div class="lux-note">Cargando catálogo…</div>
+      </div>
 
       <div class="lux-body">
         <section id="como-comprar" style="margin-top:0">
@@ -298,261 +309,282 @@
   </div>
 
   <script>
-    const PHONE = "19563371082";
+    (function(){
+      const PHONE = "19563371082";
+      const $ = (id)=>document.getElementById(id);
 
-    const ESC = (s)=>String(s).replace(/[&<>"']/g, m => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[m]));
+      const ESC = (s)=>String(s).replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[m]));
 
-    const wa = (text)=>https://wa.me/${PHONE}?text=${encodeURIComponent(text)};
+      const wa = (text)=>`https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`;
 
-    // Precios por “tier” para no escribir 200 precios a mano (y que no haya errores)
-    // tier: 1=barato, 2=medio, 3=alto, 4=premium, 5=nicho premium
-    function priceMXN(tier){
-      if(tier===1) return 850;
-      if(tier===2) return 1600;
-      if(tier===3) return 2400;
-      if(tier===4) return 3200;
-      return 5200;
-    }
-    function usdApprox(mxn){
-      // aproximación simple para mostrar USD como en tu screenshot
-      return Math.round(mxn / 20.5);
-    }
+      // Precios por nivel (para que sea rápido y consistente)
+      const priceMXN = (tier)=>{
+        if(tier===1) return 850;
+        if(tier===2) return 1600;
+        if(tier===3) return 2400;
+        if(tier===4) return 3200;
+        return 5200; // nicho
+      };
+      const usdApprox = (mxn)=>Math.round(mxn / 20.5);
 
-    // Helper para crear perfume rápido
-    function P(name, ml, meta, tags, tier){
-      return {name, ml, meta, tags, tier};
-    }
+      const P = (name, ml, meta, tags, tier)=>({name, ml, meta, tags, tier});
 
-    // ====== 200 perfumes (40 + 60 + 40 + 30 + 30 = 200) ======
-    const DATA = [
-      {
-        id:"mas-vendidos",
-        title:"🔥 Más vendidos",
-        note:"¿No ves el perfume que buscas? Mándame WhatsApp y te confirmo disponibilidad y entrega.",
-        items:[
-          P("Dior Sauvage EDP","100 ml","Versátil • Diario / Noche",["🌿 Fresco","🧴 Limpio","🌙 Noche"],4),
-          P("Acqua Di Gio Parfum","125 ml","Elegante • Oficina",["🌊 Acuático","🕴️ Formal","☀️ Diario"],4),
-          P("Azzaro The Most Wanted Parfum","100 ml","Intenso • Noche / Fiesta",["🔥 Dulce","🌙 Noche","🥂 Fiesta"],3),
-          P("Bleu de Chanel EDP","100 ml","Premium • Versátil",["🧼 Limpio","🧭 Versátil","🕴️ Formal"],4),
-          P("YSL Y EDP","100 ml","Limpio • Oficina / Diario",["🧼 Limpio","🕴️ Formal","☀️ Diario"],4),
-          P("Versace Eros EDP","100 ml","Fiesta • Noche",["🍬 Dulce","🌙 Noche","🥂 Fiesta"],3),
-          P("Invictus EDT","100 ml","Deportivo • Diario",["🏆 Deportivo","☀️ Diario","🌊 Fresco"],3),
-          P("Montblanc Explorer EDP","100 ml","Diario • Oficina",["🧭 Versátil","🕴️ Formal","☀️ Diario"],2),
-          P("Nautica Voyage EDT","100 ml","Calor • Diario",["🌊 Fresco","☀️ Diario","💸 Barato"],1),
-          P("Rasasi Hawas","100 ml","Verano • Noche",["🌊 Acuático","🔥 Proyección","🌙 Noche"],2),
-          P("JPG Le Male","125 ml","Citas • Noche",["🍯 Dulce","🌙 Noche","🧥 Frío"],3),
-          P("1 Million EDT","100 ml","Fiesta • Noche",["🍬 Dulce","🥂 Fiesta","🌙 Noche"],3),
-          P("Stronger With You","100 ml","Citas • Noche",["😎 Sexy","🍯 Dulce","🌙 Noche"],4),
-          P("Spicebomb Extreme","90 ml","Frío • Noche",["🧥 Frío","🌙 Noche","🔥 Intenso"],4),
-          P("JPG Ultra Male","125 ml","Fiesta",["🥂 Fiesta","🍬 Dulce","🌙 Noche"],4),
-          P("Aventus (inspiración)","100 ml","Versátil • Premium vibes",["🍍 Frutal","🧭 Versátil","🔥 Proyección"],3),
-          P("D&G Light Blue Pour Homme","125 ml","Calor • Diario",["🍋 Fresco","☀️ Diario","🌊 Verano"],3),
-          P("Versace Dylan Blue","100 ml","Diario • Oficina",["🧼 Limpio","☀️ Diario","🧭 Versátil"],3),
-          P("Prada L'Homme","100 ml","Oficina • Elegante",["🕴️ Formal","🧼 Limpio","🧭 Versátil"],4),
-          P("Valentino Born in Roma Uomo","100 ml","Moderno • Diario/Noche",["🧭 Versátil","🌙 Noche","🍃 Fresco"],4),
+      // ====== 200 perfumes ======
+      // 40 Más vendidos + 60 Diseñador + 40 Árabes + 30 Nicho + 30 Dama = 200
 
-          // +20 más (para llegar a 40)
-          P("Armani Code","125 ml","Formal • Noche",["🕴️ Formal","🌙 Noche","🧥 Frío"],4),
-          P("Givenchy Gentleman EDP","100 ml","Elegante • Noche",["🕴️ Formal","🌙 Noche","🧥 Frío"],4),
-          P("Dior Homme","100 ml","Elegante • Diario",["🧼 Limpio","🕴️ Formal","🧭 Versátil"],4),
-          P("Bvlgari Man in Black","100 ml","Frío • Noche",["🧥 Frío","🌙 Noche","🔥 Intenso"],4),
-          P("Carolina Herrera Bad Boy","100 ml","Noche",["🌙 Noche","😎 Sexy","🔥 Intenso"],4),
-          P("Paco Rabanne Phantom","100 ml","Diario/Noche",["🤖 Moderno","🍬 Dulce","🌙 Noche"],3),
-          P("Armani Stronger With You Intensely","100 ml","Noche",["🍯 Dulce","🌙 Noche","🥂 Fiesta"],4),
-          P("Azzaro Wanted by Night","100 ml","Noche",["🔥 Intenso","🌙 Noche","🥂 Fiesta"],3),
-          P("Tommy Impact","100 ml","Diario",["☀️ Diario","🧭 Versátil","🧼 Limpio"],2),
-          P("Coach for Men","100 ml","Diario",["🍃 Fresco","☀️ Diario","🧭 Versátil"],2),
-          P("Ferragamo Uomo","100 ml","Dulce • Noche",["🍬 Dulce","🌙 Noche","😎 Sexy"],2),
-          P("Halloween Man X","125 ml","Café • Noche",["☕ Café","🌙 Noche","💸 Best"],1),
-          P("Bentley For Men Intense","100 ml","Cuero • Noche",["🪵 Amaderado","🌙 Noche","🧥 Frío"],2),
-          P("Mercedes-Benz Club Black","100 ml","Vainilla • Noche",["🍯 Dulce","🌙 Noche","🧥 Frío"],2),
-          P("Lacoste L.12.12 Blanc","100 ml","Limpio • Diario",["🧼 Limpio","☀️ Diario","🍃 Fresco"],2),
-          P("Jimmy Choo Man","100 ml","Diario",["🧭 Versátil","☀️ Diario","🧼 Limpio"],2),
-          P("Armaf Club de Nuit Sillage","105 ml","Fresco • Proyección",["🌿 Fresco","🔥 Proyección","🧼 Limpio"],2),
-          P("Armaf Club de Nuit Milestone","105 ml","Acuático • Verano",["🌊 Acuático","☀️ Diario","🔥 Proyección"],2),
-          P("Ralph Lauren Polo Blue","125 ml","Diario",["🌊 Fresco","☀️ Diario","🧼 Limpio"],3),
-          P("Dior Sauvage Elixir","60 ml","Potente • Noche",["🔥 Proyección","🌙 Noche","👑 Premium"],4),
-        ]
-      },
-
-      {
-        id:"disenador",
-        title:"🕴️ Diseñador",
-        note:"Diseñador: versátiles y fáciles de vender.",
-        items:(()=>{
-          const arr = [
-            P("JPG Le Male Elixir","125 ml","Dulce/avainillado • Noche",["🍯 Dulce","🌙 Noche","🧥 Frío"],4),
-            P("Valentino Uomo Born in Roma","100 ml","Moderno • Diario/Noche",["🧭 Versátil","🌙 Noche","🍃 Fresco"],4),
-            P("Spicebomb Extreme","90 ml","Especiado • Frío/Noche",["🧥 Frío","🌙 Noche","🔥 Intenso"],4),
-            P("D&G The One EDP","100 ml","Citas • Noche",["😎 Sexy","🌙 Noche","🧥 Frío"],4),
-            P("Prada Luna Rossa Carbon","100 ml","Limpio • Diario",["🧼 Limpio","☀️ Diario","🧭 Versátil"],4),
-            P("Versace Pour Homme","100 ml","Fresco • Diario",["🍋 Fresco","☀️ Diario","🧼 Limpio"],3),
-          ];
-
-          const more = [
-            "Chanel Allure Homme Sport","Chanel Allure Homme Sport Eau Extreme","Terre d’Hermès EDT","Terre d’Hermès Parfum",
-            "Dior Fahrenheit","Dior Homme Intense","Armani Acqua Di Gio Profondo","Armani Code Parfum","Armani SWY Absolutely",
-            "YSL La Nuit de L’Homme","YSL L’Homme","Paco Rabanne 1 Million Lucky","Paco Rabanne 1 Million Elixir",
-            "Paco Rabanne Invictus Victory","Paco Rabanne Invictus Platinum","Givenchy Gentleman Reserve Privée",
-            "Givenchy Gentleman Boisee","Burberry Hero","Burberry Touch","Bvlgari Aqva","Bvlgari Pour Homme",
-            "Gucci Guilty","Gucci Guilty Parfum","Coach Platinum","Coach Green","Issey Miyake L’Eau d’Issey",
-            "Issey Miyake Nuit d’Issey","Lacoste Red","Lacoste Blanc","Montblanc Legend","Montblanc Legend Spirit",
-            "Montblanc Individuel","D&G K EDP","D&G K Parfum","Versace Eros Flame","Versace Oud Noir",
-            "Azzaro Chrome","Azzaro Chrome Extreme","Azzaro Pour Homme","Azzaro Wanted","Azzaro The Most Wanted EDP",
-            "Hugo Boss Bottled","Hugo Boss Bottled Night","Hugo Boss The Scent","Hugo Boss The Scent Magnetic",
-            "Carolina Herrera 212 Men","Carolina Herrera 212 VIP Men","Carolina Herrera Bad Boy Cobalt",
-            "Jean Paul Gaultier Scandal Pour Homme","Jean Paul Gaultier Le Beau","Jean Paul Gaultier Le Beau Le Parfum",
-            "Dior Homme Sport","Dior Sauvage EDT","Dior Sauvage Parfum","Ralph Lauren Polo Black","Ralph Lauren Polo Red",
-            "Ralph Lauren Polo 67","Abercrombie Fierce","A&F First Instinct","Diesel Only The Brave","Diesel Fuel for Life"
-          ];
-
-          // Convertimos esos nombres a tarjetas, para llegar a 60 en esta sección
-          for (let i=0; i<54; i++){
-            const n = more[i];
-            const tier = (i%6===0)?4 : (i%3===0)?3 : 3;
-            const ml = (i%5===0) ? "125 ml" : "100 ml";
-            const meta = (i%4===0) ? "Diario • Oficina" : (i%4===1) ? "Noche • Citas" : (i%4===2) ? "Versátil • Diario" : "Fiesta • Noche";
-            const tags = (i%4===0) ? ["🧼 Limpio","🕴️ Formal","☀️ Diario"] : (i%4===1) ? ["😎 Sexy","🌙 Noche","🧥 Frío"] : (i%4===2) ? ["🧭 Versátil","☀️ Diario","🍃 Fresco"] : ["🥂 Fiesta","🍬 Dulce","🌙 Noche"];
-            arr.push(P(n, ml, meta, tags, tier));
-          }
-
-          return arr; // total 60
-        })())
-      },
-
-      {
-        id:"arabes",
-        title:"🌙 Árabes",
-        note:"Árabes: mucha proyección y buen precio.",
-        items:(()=>{
-          const base = [
-            P("Afnan 9PM","100 ml","Dulce • Noche",["🍬 Dulce","🌙 Noche","🥂 Fiesta"],1),
-            P("Lattafa Khamrah","100 ml","Gourmand • Frío",["🍯 Dulce","🧥 Frío","🌙 Noche"],1),
-            P("Armaf Odyssey Mandarin Sky","200 ml","Dulce • Diario",["🍊 Cítrico","☀️ Diario","🍬 Dulce"],2),
-            P("Lattafa Asad","100 ml","Especiado • Noche",["🔥 Intenso","🌙 Noche","💸 Best"],1),
-            P("Armaf CDN Intense Man","105 ml","Ahumado • Noche",["🌙 Noche","🔥 Proyección","🧭 Versátil"],2),
+      const DATA = [
+        {
+          id:"mas-vendidos",
+          title:"🔥 Más vendidos",
+          note:"¿No ves el perfume que buscas? Mándame WhatsApp y te confirmo disponibilidad y entrega.",
+          items:[
+            P("Dior Sauvage EDP","100 ml","Versátil • Diario / Noche",["🌿 Fresco","🧴 Limpio","🌙 Noche"],4),
+            P("Acqua Di Gio Parfum","125 ml","Elegante • Oficina",["🌊 Acuático","🕴️ Formal","☀️ Diario"],4),
+            P("Azzaro The Most Wanted Parfum","100 ml","Intenso • Noche / Fiesta",["🔥 Dulce","🌙 Noche","🥂 Fiesta"],3),
+            P("Bleu de Chanel EDP","100 ml","Premium • Versátil",["🧼 Limpio","🧭 Versátil","🕴️ Formal"],4),
+            P("YSL Y EDP","100 ml","Limpio • Oficina / Diario",["🧼 Limpio","🕴️ Formal","☀️ Diario"],4),
+            P("Versace Eros EDP","100 ml","Fiesta • Noche",["🍬 Dulce","🌙 Noche","🥂 Fiesta"],3),
+            P("Invictus EDT","100 ml","Deportivo • Diario",["🏆 Deportivo","☀️ Diario","🌊 Fresco"],3),
+            P("Montblanc Explorer EDP","100 ml","Diario • Oficina",["🧭 Versátil","🕴️ Formal","☀️ Diario"],2),
+            P("Nautica Voyage EDT","100 ml","Calor • Diario",["🌊 Fresco","☀️ Diario","💸 Barato"],1),
             P("Rasasi Hawas","100 ml","Acuático • Verano",["🌊 Acuático","☀️ Diario","🔥 Proyección"],2),
-          ];
+            P("JPG Le Male","125 ml","Citas • Noche",["🍯 Dulce","🌙 Noche","🧥 Frío"],3),
+            P("1 Million EDT","100 ml","Fiesta • Noche",["🍬 Dulce","🥂 Fiesta","🌙 Noche"],3),
+            P("Stronger With You","100 ml","Citas • Noche",["😎 Sexy","🍯 Dulce","🌙 Noche"],4),
+            P("Spicebomb Extreme","90 ml","Frío • Noche",["🧥 Frío","🌙 Noche","🔥 Intenso"],4),
+            P("JPG Ultra Male","125 ml","Fiesta",["🥂 Fiesta","🍬 Dulce","🌙 Noche"],4),
+            P("Versace Dylan Blue","100 ml","Diario • Oficina",["🧼 Limpio","☀️ Diario","🧭 Versátil"],3),
+            P("Prada L'Homme","100 ml","Oficina • Elegante",["🕴️ Formal","🧼 Limpio","🧭 Versátil"],4),
+            P("Valentino Born in Roma Uomo","100 ml","Moderno • Diario/Noche",["🧭 Versátil","🌙 Noche","🍃 Fresco"],4),
+            P("D&G Light Blue Pour Homme","125 ml","Calor • Diario",["🍋 Fresco","☀️ Diario","🌊 Verano"],3),
+            P("Armani Code","125 ml","Formal • Noche",["🕴️ Formal","🌙 Noche","🧥 Frío"],4),
+            P("Givenchy Gentleman EDP","100 ml","Elegante • Noche",["🕴️ Formal","🌙 Noche","🧥 Frío"],4),
+            P("Dior Homme","100 ml","Elegante • Diario",["🧼 Limpio","🕴️ Formal","🧭 Versátil"],4),
+            P("Bvlgari Man in Black","100 ml","Frío • Noche",["🧥 Frío","🌙 Noche","🔥 Intenso"],4),
+            P("Carolina Herrera Bad Boy","100 ml","Noche",["😎 Sexy","🌙 Noche","🔥 Intenso"],4),
+            P("Azzaro Wanted by Night","100 ml","Noche",["🔥 Intenso","🌙 Noche","🥂 Fiesta"],3),
+            P("Bentley For Men Intense","100 ml","Cuero • Noche",["🪵 Amaderado","🌙 Noche","🧥 Frío"],2),
+            P("Mercedes-Benz Club Black","100 ml","Vainilla • Noche",["🍯 Dulce","🌙 Noche","🧥 Frío"],2),
+            P("Halloween Man X","125 ml","Café • Noche",["☕ Café","🌙 Noche","💸 Best"],1),
+            P("Armaf CDN Sillage","105 ml","Fresco • Proyección",["🌿 Fresco","🔥 Proyección","🧼 Limpio"],2),
+            P("Armaf CDN Milestone","105 ml","Acuático • Verano",["🌊 Acuático","☀️ Diario","🔥 Proyección"],2),
+            P("Polo Blue","125 ml","Diario",["🌊 Fresco","☀️ Diario","🧼 Limpio"],3),
+            P("Polo Red","125 ml","Dulce • Diario/Noche",["🍬 Dulce","🧭 Versátil","🌙 Noche"],3),
+            P("Coach for Men","100 ml","Diario",["🍃 Fresco","☀️ Diario","🧭 Versátil"],2),
+            P("Lacoste Blanc","100 ml","Limpio • Diario",["🧼 Limpio","☀️ Diario","🍃 Fresco"],2),
+            P("Issey Miyake L’Eau d’Issey","125 ml","Fresco • Diario",["🍋 Fresco","☀️ Diario","🧼 Limpio"],3),
+            P("Terre d’Hermès EDT","100 ml","Elegante • Diario",["🕴️ Formal","🧭 Versátil","☀️ Diario"],4),
+            P("YSL La Nuit de L’Homme","100 ml","Citas • Noche",["😎 Sexy","🌙 Noche","🧥 Frío"],4),
+            P("Hugo Boss Bottled","100 ml","Diario",["🧭 Versátil","☀️ Diario","🍎 Frutal"],3),
+            P("Dior Sauvage Elixir","60 ml","Potente • Noche",["🔥 Proyección","🌙 Noche","👑 Premium"],4),
+            P("Invictus Victory","100 ml","Dulce • Noche",["🍬 Dulce","🌙 Noche","🔥 Intenso"],4),
+          ]
+        },
 
-          const names = [
-            "Lattafa Fakhar Black","Lattafa Qaed Al Fursan","Lattafa Oud for Glory","Lattafa Bade’e Al Oud Amethyst",
-            "Lattafa Kismet for Men","Lattafa Ana Abiyedh","Lattafa Najdia","Lattafa Ramz Silver",
-            "Afnan Supremacy Not Only Intense","Afnan Supremacy In Oud","Afnan Turathi Blue","Afnan Rare Carbon",
-            "Armaf Club de Nuit Sillage","Armaf Club de Nuit Milestone","Armaf Tres Nuit","Armaf Ventana",
-            "Rasasi Daarej","Rasasi Sotoor","Rasasi Shuhrah","Rasasi La Yuqawam",
-            "Al Haramain Amber Oud Gold","Al Haramain Amber Oud Tobacco","Al Haramain L’Aventure","Al Haramain Detour Noir",
-            "Maison Alhambra The Tux","Maison Alhambra Tobacco Touch","Maison Alhambra Lovely Cherie","Maison Alhambra Bright Peach",
-            "Swiss Arabian Shaghaf Oud","Swiss Arabian Shaghaf Oud Azraq","Ajmal Kuro","Ajmal Wisal Dhahab",
-            "Fragrance World Jack of Clubs","Fragrance World Suits","Fragrance World After Effect","Fragrance World Barakkat Rouge 540",
-            "Armaf Odyssey Homme","Armaf Odyssey Mega","Lattafa Asad Zanzibar","Lattafa Khamrah Qahwa","Armaf Hunter Intense","Afnan 9AM Dive"
-          ];
+        {
+          id:"disenador",
+          title:"🕴️ Diseñador",
+          note:"Diseñador: versátiles y fáciles de vender.",
+          items:(()=>{
+            const seed = [
+              P("JPG Le Male Elixir","125 ml","Dulce/avainillado • Noche",["🍯 Dulce","🌙 Noche","🧥 Frío"],4),
+              P("Valentino Uomo Born in Roma","100 ml","Moderno • Diario/Noche",["🧭 Versátil","🌙 Noche","🍃 Fresco"],4),
+              P("Spicebomb Extreme","90 ml","Especiado • Frío/Noche",["🧥 Frío","🌙 Noche","🔥 Intenso"],4),
+              P("D&G The One EDP","100 ml","Citas • Noche",["😎 Sexy","🌙 Noche","🧥 Frío"],4),
+              P("Prada Luna Rossa Carbon","100 ml","Limpio • Diario",["🧼 Limpio","☀️ Diario","🧭 Versátil"],4),
+              P("Versace Pour Homme","100 ml","Fresco • Diario",["🍋 Fresco","☀️ Diario","🧼 Limpio"],3),
+            ];
 
-          const items = [...base];
-          for(let i=0;i<34;i++){
-            const n = names[i];
-            const tier = (i%8===0)?2:1;
-            const ml = (i%6===0)?"90 ml":"100 ml";
-            const meta = (i%4===0)?"Fresco • Diario":(i%4===1)?"Dulce • Noche":(i%4===2)?"Ahumado • Noche":"Versátil • Diario/Noche";
-            const tags = (i%4===0)?["🍃 Fresco","☀️ Diario","🔥 Proyección"]:(i%4===1)?["🍬 Dulce","🌙 Noche","🥂 Fiesta"]:(i%4===2)?["🪵 Amaderado","🌙 Noche","🔥 Intenso"]:["🧭 Versátil","☀️ Diario","🧼 Limpio"];
-            items.push(P(n, ml, meta, tags, tier));
-          }
-          return items; // 40
-        })())
-      },
+            const names = [
+              "Chanel Allure Homme Sport","Chanel Allure Homme Sport Eau Extreme","Terre d’Hermès Parfum","Dior Fahrenheit",
+              "Dior Homme Intense","Armani Acqua Di Gio Profondo","Armani Code Parfum","YSL L’Homme","Paco Rabanne 1 Million Lucky",
+              "Paco Rabanne 1 Million Elixir","Invictus Platinum","Givenchy Gentleman Reserve Privée","Givenchy Gentleman Boisee",
+              "Burberry Hero","Burberry Touch","Bvlgari Aqva","Bvlgari Pour Homme","Gucci Guilty","Gucci Guilty Parfum",
+              "Coach Platinum","Issey Miyake Nuit d’Issey","Montblanc Legend","Montblanc Legend Spirit","D&G K EDP",
+              "Versace Eros Flame","Azzaro Chrome","Azzaro Wanted","The Most Wanted EDP","Hugo Boss Bottled Night",
+              "Hugo Boss The Scent","212 Men","212 VIP Men","Bad Boy Cobalt","Scandal Pour Homme","Le Beau",
+              "Le Beau Le Parfum","Dior Homme Sport","Sauvage EDT","Sauvage Parfum","Polo Black","Abercrombie Fierce",
+              "Diesel Only The Brave","Gucci Guilty Black","CH Men","CH Men Prive","Ferragamo Uomo","Jimmy Choo Man",
+              "Tom Ford Ombre Leather","Tom Ford Noir Extreme","Tom Ford Costa Azzurra","Jimmy Choo Man Intense",
+              "Versace Man Eau Fraiche","Lacoste Red","Armani SWY Intensely","Armani SWY Absolutely","Armani SWY Oud",
+              "Azzaro Pour Homme","Boss The Scent Magnetic","Boss Bottled Parfum","Boss Bottled Elixir"
+            ];
 
-      {
-        id:"nicho",
-        title:"👑 Nicho",
-        note:"Nicho: aroma más exclusivo (pregunta por disponibilidad).",
-        items:(()=>{
-          const names = [
-            "Mancera Cedrat Boise","Mancera Instant Crush","Mancera Red Tobacco","Mancera Aoud Lemon Mint",
-            "Montale Arabians Tonka","Montale Intense Café","Montale Black Aoud","Montale Honey Aoud",
-            "Parfums de Marly Layton","Parfums de Marly Pegasus","Parfums de Marly Carlisle","Parfums de Marly Herod",
-            "Nishane Hacivat","Nishane Ani","Nishane Fan Your Flames","Nishane Wulong Cha",
-            "Xerjoff Erba Pura","Xerjoff Naxos","Xerjoff Torino21","Xerjoff Alexandria II",
-            "Initio Side Effect","Initio Rehab","Initio Oud for Greatness","Initio Atomic Rose",
-            "Creed Aventus","Creed Green Irish Tweed","Creed Silver Mountain Water","Creed Viking",
-            "Byredo Bal d’Afrique","Byredo Gypsy Water"
-          ];
-          return names.map((n,i)=>{
-            const ml = (i%5===0)?"125 ml":"100 ml";
-            const meta = (i%4===0)?"Premium • Versátil":(i%4===1)?"Noche • Elegante":(i%4===2)?"Proyección • Premium":"Exclusivo • Premium";
-            const tags = (i%4===0)?["👑 Premium","🧭 Versátil","🔥 Proyección"]:(i%4===1)?["🕴️ Formal","🌙 Noche","🧥 Frío"]:(i%4===2)?["🔥 Proyección","🌙 Noche","👑 Premium"]:["👑 Premium","😎 Sexy","🌙 Noche"];
-            return P(n, ml, meta, tags, 5);
-          });
-        })())
-      },
+            const out = [...seed];
+            // Queremos 60 total aquí: seed (6) + 54 de names
+            for(let i=0;i<54;i++){
+              const n = names[i];
+              const tier = (i%7===0)?4:3;
+              const ml = (i%5===0) ? "125 ml" : "100 ml";
+              const meta = (i%4===0) ? "Diario • Oficina" : (i%4===1) ? "Noche • Citas" : (i%4===2) ? "Versátil • Diario" : "Fiesta • Noche";
+              const tags = (i%4===0) ? ["🧼 Limpio","🕴️ Formal","☀️ Diario"] : (i%4===1) ? ["😎 Sexy","🌙 Noche","🧥 Frío"] : (i%4===2) ? ["🧭 Versátil","☀️ Diario","🍃 Fresco"] : ["🥂 Fiesta","🍬 Dulce","🌙 Noche"];
+              out.push(P(n, ml, meta, tags, tier));
+            }
+            return out;
+          })()
+        },
 
-      {
-        id:"dama",
-        title:"💖 Dama",
-        note:"Dama: opciones que siempre se mueven bien.",
-        items:(()=>{
-          const names = [
-            "YSL Libre EDP","YSL Black Opium EDP","Lancôme La Vie Est Belle","Carolina Herrera Good Girl",
-            "Versace Bright Crystal","D&G Light Blue (Dama)","Armani My Way","Armani Si",
-            "Viktor&Rolf Flowerbomb","Jean Paul Gaultier La Belle","Valentino Donna Born in Roma","Dior J’adore",
-            "Dior Miss Dior","Chanel Coco Mademoiselle","Chanel Chance Eau Tendre","Gucci Bloom",
-            "Marc Jacobs Daisy","Prada Paradoxe","Burberry Her","Mugler Alien",
-            "Mugler Angel","Paco Rabanne Olympea","Paco Rabanne Fame","Givenchy L’Interdit",
-            "Narciso Rodriguez For Her","Carolina Herrera Very Good Girl","Yara (Lattafa)","Yara Tous (Lattafa)",
-            "Ariana Grande Cloud","Ariana Grande Sweet Like Candy"
-          ];
-          return names.map((n,i)=>{
-            const ml = (i%4===0)?"100 ml":(i%4===1)?"90 ml":(i%4===2)?"80 ml":"100 ml";
-            const meta = (i%4===0)?"Elegante • Diario":(i%4===1)?"Dulce • Diario/Noche":(i%4===2)?"Noche • Sexy":"Fresco • Diario";
-            const tags = (i%4===0)?["🕴️ Elegante","☀️ Diario","🌸 Floral"]:(i%4===1)?["🍬 Dulce","🌙 Noche","🌸 Floral"]:(i%4===2)?["😎 Sexy","🌙 Noche","🍯 Dulce"]:["🧼 Limpio","☀️ Diario","🍃 Fresco"];
-            const tier = (n.includes("Yara")||n.includes("Cloud")) ? 2 : 4;
-            return P(n, ml, meta, tags, tier);
-          });
-        })())
-      }
-    ];
+        {
+          id:"arabes",
+          title:"🌙 Árabes",
+          note:"Árabes: mucha proyección y buen precio.",
+          items:(()=>{
+            const base = [
+              P("Afnan 9PM","100 ml","Dulce • Noche",["🍬 Dulce","🌙 Noche","🥂 Fiesta"],1),
+              P("Lattafa Khamrah","100 ml","Gourmand • Frío",["🍯 Dulce","🧥 Frío","🌙 Noche"],1),
+              P("Armaf Odyssey Mandarin Sky","200 ml","Dulce • Diario",["🍊 Cítrico","☀️ Diario","🍬 Dulce"],2),
+              P("Lattafa Asad","100 ml","Especiado • Noche",["🔥 Intenso","🌙 Noche","💸 Best"],1),
+              P("Armaf CDN Intense Man","105 ml","Ahumado • Noche",["🌙 Noche","🔥 Proyección","🧭 Versátil"],2),
+              P("Al Haramain Detour Noir","100 ml","Dulce especiado • Noche",["🍯 Dulce","🌙 Noche","🧥 Frío"],2),
+            ];
 
-    function cardHTML(p){
-      const mxn = priceMXN(p.tier);
-      const usd = usdApprox(mxn);
-      const msg = Hola quiero ${p.name} ${p.ml} (${mxn} MXN). ¿Hay disponibilidad?;
+            const names = [
+              "Lattafa Fakhar Black","Lattafa Qaed Al Fursan","Lattafa Oud for Glory","Lattafa Bade’e Al Oud Amethyst",
+              "Lattafa Najdia","Lattafa Ramz Silver","Afnan Supremacy NOI","Afnan Turathi Blue","Afnan Rare Carbon",
+              "Armaf Tres Nuit","Armaf Ventana","Rasasi Daarej","Rasasi Shuhrah","Rasasi La Yuqawam",
+              "Al Haramain Amber Oud Gold","Al Haramain Amber Oud Tobacco","Al Haramain L’Aventure","Maison Alhambra The Tux",
+              "Maison Alhambra Tobacco Touch","Maison Alhambra Lovely Cherie","Maison Alhambra Bright Peach",
+              "Swiss Arabian Shaghaf Oud","Ajmal Kuro","Fragrance World Suits","Fragrance World After Effect",
+              "Armaf Odyssey Homme","Armaf Odyssey Mega","Lattafa Khamrah Qahwa","Armaf Hunter Intense","Afnan 9AM Dive",
+              "Lattafa Asad Zanzibar","Lattafa Ana Abiyedh","Lattafa Kismet","Lattafa Qaed","Rasasi Sotoor",
+              "Armaf Club de Nuit Sillage","Armaf Club de Nuit Milestone","Al Haramain Portfolio Neroli Canvas",
+              "Swiss Arabian Shaghaf Oud Azraq","Ajmal Wisal Dhahab"
+            ];
 
-      const tags = (p.tags||[]).map(t=><span class="lux-tag">${ESC(t)}</span>).join("");
+            const items = [...base];
+            // base 6 + 34 = 40
+            for(let i=0;i<34;i++){
+              const n = names[i];
+              const tier = (i%9===0)?2:1;
+              const ml = (i%6===0)?"90 ml":"100 ml";
+              const meta = (i%4===0)?"Fresco • Diario":(i%4===1)?"Dulce • Noche":(i%4===2)?"Ahumado • Noche":"Versátil • Diario/Noche";
+              const tags = (i%4===0)?["🍃 Fresco","☀️ Diario","🔥 Proyección"]:(i%4===1)?["🍬 Dulce","🌙 Noche","🥂 Fiesta"]:(i%4===2)?["🪵 Amaderado","🌙 Noche","🔥 Intenso"]:["🧭 Versátil","☀️ Diario","🧼 Limpio"];
+              items.push(P(n, ml, meta, tags, tier));
+            }
+            return items;
+          })()
+        },
 
-      return `
-        <div class="lux-card">
-          <div class="lux-img"></div>
-          <div class="lux-content">
-            <p class="lux-name">${ESC(p.name)}</p>
-            <p class="lux-meta">${ESC(p.ml)} • ${ESC(p.meta)}</p>
-            ${tags ? <div class="lux-tags">${tags}</div> : ``}
-            <div class="lux-price">$${mxn.toLocaleString("es-MX")} MXN • $${usd} USD</div>
-            <div class="lux-row">
-              <a class="lux-mini gold" target="_blank" rel="noopener" href="${wa(msg)}">Pedir</a>
-              <a class="lux-mini ghost" target="_blank" rel="noopener"
-                 href="${wa("Hola ¿Me confirmas disponibilidad y entrega?")}">Disponibilidad</a>
+        {
+          id:"nicho",
+          title:"👑 Nicho",
+          note:"Nicho: aroma más exclusivo (pregunta por disponibilidad).",
+          items:(()=>{
+            const names = [
+              "Mancera Cedrat Boise","Mancera Instant Crush","Mancera Red Tobacco","Mancera Aoud Lemon Mint",
+              "Montale Arabians Tonka","Montale Intense Café","Montale Black Aoud","Montale Honey Aoud",
+              "Parfums de Marly Layton","Parfums de Marly Pegasus","Parfums de Marly Carlisle","Parfums de Marly Herod",
+              "Nishane Hacivat","Nishane Ani","Nishane Wulong Cha","Nishane Fan Your Flames",
+              "Xerjoff Erba Pura","Xerjoff Naxos","Xerjoff Torino21","Xerjoff Alexandria II",
+              "Initio Side Effect","Initio Rehab","Initio Oud for Greatness","Initio Atomic Rose",
+              "Creed Aventus","Creed Green Irish Tweed","Creed Silver Mountain Water","Creed Viking",
+              "Byredo Bal d’Afrique","Byredo Gypsy Water"
+            ];
+            return names.map((n,i)=>{
+              const ml = (i%5===0)?"125 ml":"100 ml";
+              const meta = (i%4===0)?"Premium • Versátil":(i%4===1)?"Noche • Elegante":(i%4===2)?"Proyección • Premium":"Exclusivo • Premium";
+              const tags = (i%4===0)?["👑 Premium","🧭 Versátil","🔥 Proyección"]:(i%4===1)?["🕴️ Formal","🌙 Noche","🧥 Frío"]:(i%4===2)?["🔥 Proyección","🌙 Noche","👑 Premium"]:["👑 Premium","😎 Sexy","🌙 Noche"];
+              return P(n, ml, meta, tags, 5);
+            });
+          })()
+        },
+
+        {
+          id:"dama",
+          title:"💖 Dama",
+          note:"Dama: opciones que siempre se mueven bien.",
+          items:(()=>{
+            const names = [
+              "YSL Libre EDP","YSL Black Opium EDP","Lancôme La Vie Est Belle","Carolina Herrera Good Girl",
+              "Versace Bright Crystal","D&G Light Blue (Dama)","Armani My Way","Armani Si",
+              "Viktor&Rolf Flowerbomb","Jean Paul Gaultier La Belle","Valentino Donna Born in Roma","Dior J’adore",
+              "Dior Miss Dior","Chanel Coco Mademoiselle","Chanel Chance Eau Tendre","Gucci Bloom",
+              "Marc Jacobs Daisy","Prada Paradoxe","Burberry Her","Mugler Alien",
+              "Mugler Angel","Paco Rabanne Olympea","Paco Rabanne Fame","Givenchy L’Interdit",
+              "Narciso Rodriguez For Her","Carolina Herrera Very Good Girl","Lattafa Yara","Lattafa Yara Tous",
+              "Ariana Grande Cloud","Ariana Grande Sweet Like Candy"
+            ];
+            return names.map((n,i)=>{
+              const ml = (i%4===0)?"100 ml":(i%4===1)?"90 ml":(i%4===2)?"80 ml":"100 ml";
+              const meta = (i%4===0)?"Elegante • Diario":(i%4===1)?"Dulce • Diario/Noche":(i%4===2)?"Noche • Sexy":"Fresco • Diario";
+              const tags = (i%4===0)?["🕴️ Elegante","☀️ Diario","🌸 Floral"]:(i%4===1)?["🍬 Dulce","🌙 Noche","🌸 Floral"]:(i%4===2)?["😎 Sexy","🌙 Noche","🍯 Dulce"]:["🧼 Limpio","☀️ Diario","🍃 Fresco"];
+              const tier = (n.includes("Yara") || n.includes("Cloud")) ? 2 : 4;
+              return P(n, ml, meta, tags, tier);
+            });
+          })()
+        }
+      ];
+
+      // Render card
+      function cardHTML(p){
+        const mxn = priceMXN(p.tier);
+        const usd = usdApprox(mxn);
+        const msg = `Hola quiero ${p.name} ${p.ml} (${mxn} MXN). ¿Hay disponibilidad?`;
+        const tags = (p.tags||[]).map(t=>`<span class="lux-tag">${ESC(t)}</span>`).join("");
+
+        return `
+          <div class="lux-card">
+            <div class="lux-img"></div>
+            <div class="lux-content">
+              <p class="lux-name">${ESC(p.name)}</p>
+              <p class="lux-meta">${ESC(p.ml)} • ${ESC(p.meta)}</p>
+              ${tags ? `<div class="lux-tags">${tags}</div>` : ``}
+              <div class="lux-price">$${mxn.toLocaleString("es-MX")} MXN • $${usd} USD</div>
+              <div class="lux-row">
+                <a class="lux-mini gold" target="_blank" rel="noopener" href="${wa(msg)}">Pedir</a>
+                <a class="lux-mini ghost" target="_blank" rel="noopener" href="${wa("Hola ¿Me confirmas disponibilidad y entrega?")}">Disponibilidad</a>
+              </div>
             </div>
           </div>
-        </div>
-      `;
-    }
+        `;
+      }
 
-    function sectionHTML(sec){
-      return `
-        <section id="${ESC(sec.id)}">
-          <h2 class="lux-h2">${ESC(sec.title)}</h2>
-          <div class="lux-grid">
-            ${sec.items.map(cardHTML).join("")}
-          </div>
-          ${sec.note ? <p class="lux-note">${ESC(sec.note)}</p> : ``}
-        </section>
-      `;
-    }
+      function sectionHTML(sec){
+        return `
+          <section id="${ESC(sec.id)}">
+            <h2 class="lux-h2">${ESC(sec.title)}</h2>
+            <div class="lux-grid">${sec.items.map(cardHTML).join("")}</div>
+            ${sec.note ? `<p class="lux-note">${ESC(sec.note)}</p>` : ``}
+          </section>
+        `;
+      }
 
-    window.addEventListener("DOMContentLoaded", ()=>{
-      const el = document.getElementById("catalog");
-      el.innerHTML = DATA.map(sectionHTML).join("");
-    });
+      function render(){
+        const el = $("catalog");
+        if(!el) return;
+
+        // sanity check
+        const total = DATA.reduce((sum,s)=>sum + (s.items?.length||0),0);
+
+        if(total !== 200){
+          el.innerHTML = `
+            <div class="lux-error">
+              Error: el catálogo no trae 200 perfumes (trae ${total}). Dime y lo ajusto.
+            </div>
+          `;
+          return;
+        }
+
+        el.innerHTML = DATA.map(sectionHTML).join("");
+      }
+
+      try{
+        render();
+      }catch(err){
+        const el = $("catalog");
+        if(el){
+          el.innerHTML = `
+            <div class="lux-error">
+              Hubo un error cargando el catálogo. <br>
+              Tip: asegúrate de pegar el archivo completo y hacer Commit. <br>
+              Error: ${ESC(err && err.message ? err.message : err)}
+            </div>
+          `;
+        }
+      }
+    })();
   </script>
 </body>
 </html>
