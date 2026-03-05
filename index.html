@@ -107,47 +107,6 @@
     }
     .lux-chip:hover{border-color:var(--line2);transform:translateY(-1px)}
 
-    /* Sticky barra de búsqueda */
-    .lux-sticky{
-      position:sticky;
-      top:0;
-      z-index:50;
-      background:rgba(7,7,12,.65);
-      backdrop-filter:blur(10px);
-      border-bottom:1px solid var(--line);
-      padding:10px 16px;
-    }
-    .lux-sticky-inner{
-      max-width:1120px;
-      margin:0 auto;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-    }
-    .lux-input{
-      width:100%;
-      min-width:220px;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      color:var(--text);
-      outline:none;
-      flex:1 1 240px;
-    }
-    .lux-input::placeholder{color:rgba(169,172,192,.85)}
-    .lux-pill{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:10px 12px;border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.25);
-      color:var(--muted);
-      font-size:12px;
-      white-space:nowrap;
-    }
-
     /* Body + secciones */
     .lux-body{padding:16px}
     .lux-h2{
@@ -174,7 +133,6 @@
       overflow:hidden;
       box-shadow:0 14px 50px rgba(0,0,0,.35);
     }
-    /* placeholder superior */
     .lux-img{
       height:62px;
       border-bottom:1px solid var(--line);
@@ -223,7 +181,6 @@
       background:rgba(0,0,0,.20);
     }
 
-    /* Caja info */
     .lux-info{
       border:1px solid var(--line);
       border-radius:18px;
@@ -253,27 +210,16 @@
     }
     .lux-wa-float span{display:inline}
 
-    /* === OPTIMIZACIÓN CELULAR (como tu screenshot) === */
+    /* ✅ MÓVIL como tu screenshot: 2 columnas */
     @media (max-width: 520px){
       .lux-wrap{padding:10px}
       .lux-hero{padding:14px 12px 10px}
       .lux-title{font-size:24px}
       .lux-sub{font-size:12.5px;margin-top:4px}
-
       .lux-actions{width:100%;gap:8px}
       .lux-btn{flex:1 1 auto;padding:12px 12px}
-
       .lux-badge{font-size:11px;padding:6px 9px}
-
-      .lux-sticky{padding:10px 12px}
-      .lux-input{min-width:160px}
-
-      /* 2 columnas en móvil */
-      .lux-grid{
-        grid-template-columns:repeat(2, minmax(0,1fr)) !important;
-        gap:10px;
-      }
-
+      .lux-grid{grid-template-columns:repeat(2, minmax(0,1fr)) !important;gap:10px}
       .lux-img{height:54px}
       .lux-content{padding:10px 10px 12px}
       .lux-name{font-size:13.5px}
@@ -281,7 +227,6 @@
       .lux-tag{font-size:11px;padding:5px 7px}
       .lux-price{font-size:13.5px;margin:8px 0 8px}
       .lux-mini{min-height:40px;padding:10px 10px;border-radius:12px;font-size:12.5px}
-
       .lux-wa-float{right:12px;bottom:12px;padding:12px 12px}
     }
     @media (max-width: 360px){
@@ -300,7 +245,6 @@
   <div class="lux-wrap">
     <div class="lux-bg">
 
-      <!-- HERO -->
       <div class="lux-hero">
         <div class="lux-top">
           <div>
@@ -336,159 +280,259 @@
         </div>
       </div>
 
-      <!-- Sticky búsqueda -->
-      <div class="lux-sticky">
-        <div class="lux-sticky-inner">
-          <input id="q" class="lux-input" placeholder="Buscar (ej: sauvage, lattafa, 100ml, noche)" />
-          <span class="lux-pill" id="count">Cargando…</span>
-        </div>
-      </div>
+      <div class="lux-body">
 
-      <!-- Catálogo -->
-      <div class="lux-body" id="catalog"></div>
+        <!-- 🔥 MÁS VENDIDOS -->
+        <section id="mas-vendidos">
+          <h2 class="lux-h2">🔥 Más vendidos</h2>
+          <div class="lux-grid">
 
-    </div>
-  </div>
-
-  <script>
-    // ✅ WhatsApp (formato wa.me sin + ni paréntesis)
-    const PHONE = "19563371082";
-
-    // Datos: secciones + perfumes
-    const SECTIONS = [
-      {
-        id:"mas-vendidos",
-        title:"🔥 Más vendidos",
-        note:"¿No ves el perfume que buscas? Mándame WhatsApp y te confirmo disponibilidad y entrega.",
-        items:[
-          {name:"Dior Sauvage EDP", ml:"100 ml", meta:"Versátil • Diario / Noche", tags:["🌿 Fresco","🧴 Limpio","🌙 Noche"], priceMXN:3200, priceUSD:156},
-          {name:"Acqua Di Gio Parfum", ml:"125 ml", meta:"Elegante • Oficina", tags:["🌊 Acuático","🕴️ Formal","☀️ Diario"], priceMXN:2900, priceUSD:141},
-          {name:"Azzaro The Most Wanted Parfum", ml:"100 ml", meta:"Intenso • Noche / Fiesta", tags:["🔥 Dulce","🌙 Noche","🥂 Fiesta"], priceMXN:2600, priceUSD:127},
-          {name:"YSL Y EDP", ml:"100 ml", meta:"Limpio • Oficina / Diario", tags:["🧼 Limpio","🕴️ Formal","☀️ Diario"], priceMXN:2600, priceUSD:127},
-          {name:"Bleu de Chanel EDP", ml:"100 ml", meta:"Premium • Versátil", tags:["🧼 Limpio","🧭 Versátil","🕴️ Formal"], priceMXN:3300, priceUSD:160},
-          {name:"Invictus EDT", ml:"100 ml", meta:"Deportivo • Diario", tags:["🏆 Deportivo","☀️ Diario","🌊 Fresco"], priceMXN:1700, priceUSD:83},
-        ]
-      },
-      {
-        id:"disenador",
-        title:"🕴️ Diseñador",
-        note:"Diseñador: versátiles y fáciles de vender.",
-        items:[
-          {name:"JPG Le Male Elixir", ml:"125 ml", meta:"Dulce/Avainillado • Noche", tags:["🍯 Dulce","🌙 Noche","🧥 Frío"], priceMXN:3100, priceUSD:151},
-          {name:"Valentino Uomo Born in Roma", ml:"100 ml", meta:"Moderno • Diario/Noche", tags:["🧭 Versátil","🌙 Noche","🍃 Fresco"], priceMXN:2400, priceUSD:117},
-          {name:"Spicebomb Extreme", ml:"90 ml", meta:"Especiado • Frío/Noche", tags:["🧥 Frío","🌙 Noche","🔥 Intenso"], priceMXN:2400, priceUSD:117},
-          {name:"Versace Eros EDP", ml:"100 ml", meta:"Fiesta • Noche", tags:["🍬 Dulce","🌙 Noche","🥂 Fiesta"], priceMXN:1800, priceUSD:88},
-          {name:"Prada Luna Rossa Carbon", ml:"100 ml", meta:"Limpio • Diario", tags:["🧼 Limpio","☀️ Diario","🧭 Versátil"], priceMXN:2600, priceUSD:127},
-          {name:"D&G The One EDP", ml:"100 ml", meta:"Citas • Noche", tags:["😎 Sexy","🌙 Noche","🧥 Frío"], priceMXN:2400, priceUSD:117},
-        ]
-      },
-      {
-        id:"arabes",
-        title:"🌙 Árabes",
-        note:"Árabes: mucha proyección y buen precio.",
-        items:[
-          {name:"Afnan 9PM", ml:"100 ml", meta:"Dulce • Noche", tags:["🍬 Dulce","🌙 Noche","🥂 Fiesta"], priceMXN:850, priceUSD:41},
-          {name:"Lattafa Khamrah", ml:"100 ml", meta:"Gourmand • Frío", tags:["🍯 Dulce","🧥 Frío","🌙 Noche"], priceMXN:925, priceUSD:45},
-          {name:"Armaf Odyssey Mandarin Sky", ml:"200 ml", meta:"Dulce • Diario", tags:["🍊 Cítrico","☀️ Diario","🍬 Dulce"], priceMXN:1300, priceUSD:64},
-          {name:"Lattafa Asad", ml:"100 ml", meta:"Especiado • Noche", tags:["🔥 Intenso","🌙 Noche","💸 Best"], priceMXN:650, priceUSD:32},
-          {name:"Armaf CDN Intense Man", ml:"105 ml", meta:"Ahumado • Noche", tags:["🌙 Noche","🔥 Proyección","🧭 Versátil"], priceMXN:950, priceUSD:46},
-          {name:"Rasasi Hawas", ml:"100 ml", meta:"Acuático • Verano", tags:["🌊 Acuático","☀️ Diario","🔥 Proyección"], priceMXN:1100, priceUSD:54},
-        ]
-      },
-      {
-        id:"nicho",
-        title:"👑 Nicho",
-        note:"Nicho: aroma más exclusivo (pregunta por disponibilidad).",
-        items:[
-          {name:"Xerjoff Erba Pura", ml:"100 ml", meta:"Frutal • Premium", tags:["🍍 Frutal","👑 Premium","🔥 Proyección"], priceMXN:4500, priceUSD:220},
-          {name:"Parfums de Marly Layton", ml:"125 ml", meta:"Dulce especiado", tags:["🍯 Dulce","🧥 Frío","👑 Premium"], priceMXN:5200, priceUSD:255},
-          {name:"Creed Aventus", ml:"100 ml", meta:"Clásico • Premium", tags:["🍍 Frutal","🧭 Versátil","👑 Premium"], priceMXN:6500, priceUSD:320},
-          {name:"Mancera Cedrat Boise", ml:"120 ml", meta:"Cítrico amaderado", tags:["🍋 Cítrico","🧭 Versátil","🔥 Proyección"], priceMXN:2800, priceUSD:137},
-          {name:"Initio Side Effect", ml:"90 ml", meta:"Ambarado • Noche", tags:["🌙 Noche","🔥 Intenso","👑 Premium"], priceMXN:6200, priceUSD:305},
-          {name:"Nishane Hacivat", ml:"100 ml", meta:"Fresco premium", tags:["🌿 Fresco","🔥 Proyección","👑 Premium"], priceMXN:5800, priceUSD:285},
-        ]
-      },
-      {
-        id:"dama",
-        title:"💖 Dama",
-        note:"Dama: opciones que siempre se mueven bien.",
-        items:[
-          {name:"YSL Libre EDP", ml:"90 ml", meta:"Elegante • Diario", tags:["🕴️ Elegante","☀️ Diario","🌸 Floral"], priceMXN:3200, priceUSD:156},
-          {name:"Good Girl EDP", ml:"80 ml", meta:"Noche • Sexy", tags:["😎 Sexy","🌙 Noche","🍯 Dulce"], priceMXN:3200, priceUSD:156},
-          {name:"Black Opium EDP", ml:"90 ml", meta:"Café • Noche", tags:["☕ Café","🌙 Noche","🍬 Dulce"], priceMXN:3100, priceUSD:151},
-          {name:"La Vie Est Belle", ml:"100 ml", meta:"Dulce • Diario", tags:["🍬 Dulce","☀️ Diario","🌸 Floral"], priceMXN:2900, priceUSD:141},
-          {name:"Versace Bright Crystal", ml:"90 ml", meta:"Fresco • Diario", tags:["🧼 Limpio","☀️ Diario","🌸 Floral"], priceMXN:2200, priceUSD:107},
-          {name:"Lattafa Yara", ml:"100 ml", meta:"Dulce • Diario", tags:["🍓 Dulce","☀️ Diario","💸 Best"], priceMXN:700, priceUSD:34},
-        ]
-      },
-    ];
-
-    // Utilidades
-    function esc(s){
-      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    }
-    function waLink(text){
-      return https://wa.me/${PHONE}?text=${encodeURIComponent(text)};
-    }
-
-    // Render
-    const catalogEl = document.getElementById("catalog");
-    const qEl = document.getElementById("q");
-    const countEl = document.getElementById("count");
-
-    function cardHTML(p){
-      const msg = Hola quiero ${p.name} ${p.ml} (${p.priceMXN} MXN). ¿Hay disponibilidad?;
-      return `
-        <div class="lux-card">
-          <div class="lux-img"></div>
-          <div class="lux-content">
-            <p class="lux-name">${esc(p.name)}</p>
-            <p class="lux-meta">${esc(p.ml)} • ${esc(p.meta)}</p>
-            <div class="lux-tags">${(p.tags||[]).map(t=><span class="lux-tag">${esc(t)}</span>).join("")}</div>
-            <div class="lux-price">$${Number(p.priceMXN).toLocaleString("es-MX")} MXN • $${Number(p.priceUSD).toLocaleString("en-US")} USD</div>
-            <div class="lux-row">
-              <a class="lux-mini gold" target="_blank" rel="noopener" href="${waLink(msg)}">Pedir</a>
-              <a class="lux-mini ghost" target="_blank" rel="noopener"
-                 href="https://wa.me/${PHONE}?text=Hola%20%C2%BFMe%20confirmas%20disponibilidad%20y%20entrega%3F">Disponibilidad</a>
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">Dior Sauvage EDP</p>
+                <p class="lux-meta">100 ml • Versátil • Diario / Noche</p>
+                <div class="lux-tags">
+                  <span class="lux-tag">🌿 Fresco</span><span class="lux-tag">🧴 Limpio</span><span class="lux-tag">🌙 Noche</span>
+                </div>
+                <div class="lux-price">$3,200 MXN • $156 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20Dior%20Sauvage%20EDP%20100ml%20$3,200%20MXN">
+                    Pedir
+                  </a>
+                  <a class="lux-mini ghost" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20%C2%BFMe%20confirmas%20disponibilidad%20y%20entrega%3F">
+                    Disponibilidad
+                  </a>
+                </div>
+              </div>
             </div>
+
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">Acqua Di Gio Parfum</p>
+                <p class="lux-meta">125 ml • Elegante • Oficina</p>
+                <div class="lux-tags">
+                  <span class="lux-tag">🌊 Acuático</span><span class="lux-tag">🕴️ Formal</span><span class="lux-tag">☀️ Diario</span>
+                </div>
+                <div class="lux-price">$2,900 MXN • $141 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20Acqua%20Di%20Gio%20Parfum%20125ml%20$2,900%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">Azzaro The Most Wanted Parfum</p>
+                <p class="lux-meta">100 ml • Intenso • Noche / Fiesta</p>
+                <div class="lux-tags">
+                  <span class="lux-tag">🔥 Dulce</span><span class="lux-tag">🌙 Noche</span><span class="lux-tag">🥂 Fiesta</span>
+                </div>
+                <div class="lux-price">$2,600 MXN • $127 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20Azzaro%20The%20Most%20Wanted%20100ml%20$2,600%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
           </div>
-        </div>
-      `;
-    }
+          <p class="lux-note">¿No ves el perfume que buscas? Mándame WhatsApp y te confirmo disponibilidad y entrega.</p>
+        </section>
 
-    function render(){
-      const q = (qEl.value || "").trim().toLowerCase();
-      let total = 0;
+        <!-- 🕴️ DISEÑADOR -->
+        <section id="disenador">
+          <h2 class="lux-h2">🕴️ Diseñador</h2>
+          <div class="lux-grid">
 
-      const html = SECTIONS.map(sec=>{
-        let items = sec.items;
-
-        if(q){
-          items = items.filter(p=>{
-            const blob = ${sec.title} ${p.name} ${p.ml} ${p.meta} ${(p.tags||[]).join(" ")} ${p.priceMXN} ${p.priceUSD}.toLowerCase();
-            return blob.includes(q);
-          });
-        }
-
-        if(items.length === 0) return "";
-
-        total += items.length;
-
-        return `
-          <section id="${esc(sec.id)}">
-            <h2 class="lux-h2">
-              <span>${esc(sec.title)}</span>
-              <span class="lux-pill">${items.length} productos</span>
-            </h2>
-            <div class="lux-grid">
-              ${items.map(cardHTML).join("")}
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">JPG Le Male Elixir</p>
+                <p class="lux-meta">125 ml • Dulce/avainillado • Noche</p>
+                <div class="lux-price">$3,100 MXN • $151 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20JPG%20Le%20Male%20Elixir%20125ml%20$3,100%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
             </div>
-            ${sec.note ? <p class="lux-note">${esc(sec.note)}</p> : ``}
-          </section>
-        `;
-      }).join("");
 
-      catalogEl.innerHTML = html + `
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">Valentino Uomo Born in Roma</p>
+                <p class="lux-meta">100 ml • Moderno • Diario/Noche</p>
+                <div class="lux-price">$2,400 MXN • $117 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20Valentino%20Born%20in%20Roma%20100ml%20$2,400%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">Spicebomb Extreme</p>
+                <p class="lux-meta">90 ml • Especiado • Frío/Noche</p>
+                <div class="lux-price">$2,400 MXN • $117 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20Spicebomb%20Extreme%2090ml%20$2,400%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- 🌙 ÁRABES -->
+        <section id="arabes">
+          <h2 class="lux-h2">🌙 Árabes</h2>
+          <div class="lux-grid">
+
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">Afnan 9PM</p>
+                <p class="lux-meta">100 ml • Dulce • Noche</p>
+                <div class="lux-price">$850 MXN • $41 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20Afnan%209PM%20100ml%20$850%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">Lattafa Khamrah</p>
+                <p class="lux-meta">100 ml • Gourmand • Frío</p>
+                <div class="lux-price">$925 MXN • $45 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20Lattafa%20Khamrah%20100ml%20$925%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">Armaf Odyssey Mandarin Sky</p>
+                <p class="lux-meta">200 ml • Dulce • Diario</p>
+                <div class="lux-price">$1,300 MXN • $64 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20Armaf%20Odyssey%20Mandarin%20Sky%20200ml%20$1,300%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- 👑 NICHO -->
+        <section id="nicho">
+          <h2 class="lux-h2">👑 Nicho</h2>
+          <div class="lux-grid">
+
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">Mancera Cedrat Boise</p>
+                <p class="lux-meta">120 ml • Cítrico amaderado</p>
+                <div class="lux-price">$2,800 MXN • $137 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20Mancera%20Cedrat%20Boise%20120ml%20$2,800%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">PDM Layton</p>
+                <p class="lux-meta">125 ml • Dulce especiado</p>
+                <div class="lux-price">$5,200 MXN • $255 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20PDM%20Layton%20125ml%20$5,200%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <p class="lux-note">Nicho depende de stock. Pregunta por disponibilidad por WhatsApp.</p>
+        </section>
+
+        <!-- 💖 DAMA -->
+        <section id="dama">
+          <h2 class="lux-h2">💖 Dama</h2>
+          <div class="lux-grid">
+
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">YSL Libre EDP</p>
+                <p class="lux-meta">90 ml • Elegante • Diario</p>
+                <div class="lux-price">$3,200 MXN • $156 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20YSL%20Libre%2090ml%20$3,200%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="lux-card">
+              <div class="lux-img"></div>
+              <div class="lux-content">
+                <p class="lux-name">Black Opium EDP</p>
+                <p class="lux-meta">90 ml • Café • Noche</p>
+                <div class="lux-price">$3,100 MXN • $151 USD</div>
+                <div class="lux-row">
+                  <a class="lux-mini gold" target="_blank" rel="noopener"
+                     href="https://wa.me/19563371082?text=Hola%20quiero%20Black%20Opium%2090ml%20$3,100%20MXN">
+                    Pedir
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- 🛒 CÓMO COMPRAR -->
         <section id="como-comprar" style="margin-top:16px">
           <h2 class="lux-h2">🛒 Cómo comprar</h2>
           <div class="lux-info">
@@ -498,16 +542,9 @@
             </p>
           </div>
         </section>
-      `;
 
-      countEl.textContent = ${total} perfumes;
-    }
-
-    // Arranque seguro
-    window.addEventListener("DOMContentLoaded", ()=>{
-      render();
-      qEl.addEventListener("input", render);
-    });
-  </script>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
